@@ -21,6 +21,7 @@ List of Badges!
     badge_LPTHW_2
     badge_turtle
     badge_djangoapp
+    badge_djangozoom
     badge_python_tutorial
     badge_colorwall
     badge_edit_html
