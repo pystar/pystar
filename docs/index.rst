@@ -18,23 +18,6 @@ joining our google group http://groups.google.com/group/pystar. Also if you have
 and have material you'd like to submit to help other organizers please fork 
 https://github.com/pystar/pystar and do a pull request or ask to become a collaborator via the google group.
 
-PyStar Philly
---------------
-
-Saturday, August 13 from 9:30am to 4:30pm
-
-The Hacktory at 1524 Brandywine Street
-Philadelphia PA 
-19130
-
-Register at: http://pystarphillyworkshop2-eorg.eventbrite.com
-
-PyStar Minneapolis
-------------------
-
-Please check back again for updates.
-
-
 PyStar SF
 ------------
 
@@ -43,6 +26,18 @@ September 10, 2011 from 9am to 4pm
 Register at: http://www.eventbrite.com/event/2084750545
 
 follow @Pystar_Promo on Twitter for updates.
+
+
+PyStar Philly
+--------------
+
+Please check back for updates
+
+PyStar Minneapolis
+------------------
+
+Please check back for updates.
+
 
 Curriculum
 ------------
