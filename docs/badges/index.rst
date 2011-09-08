@@ -7,7 +7,7 @@ Badges
 List of Badges!
 
 ..  toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     badge_reading_the_text
     badge_self_help

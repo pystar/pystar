@@ -24,7 +24,7 @@ In gedit, type the following code into a new document and save it as turtle1.py:
 
 Run turtle1.py using the CLI. A "Python Turtle Graphics" window should pop up and you should see an animation resulting in a black outlined square with sides that are 25 pixels long. Click inside the window and it should close - this is because of the line ``turtle.exitonclick()`` in your program. Comment out this line and run the program again. Is it clear why having this line in the code is pretty handy?
 
-**Extra Credit**: Modify turtle1.py so that the box is a different color. Make the program draw a bigger or smaller square.
+**Extra Credit**: Modify turtle1.py so that the box is a different color (refer to the turtle module documentation, linked above). Make the program draw a bigger or smaller square.
 
 Exercise 1
 -----------
@@ -65,6 +65,39 @@ When you run turtle3.py, you should be asked for input: "How big would you like 
 **Extra Credit**: Change the above code to allow the user to enter in what color they'd like the box to be in addition to how long they want the sides. Change ``left_square()`` so it draws the right color box.
 
 Exercise 2
+----------
+
+Do you understand what the "90" numbers in the above examples means? Try changing it to different values. Also experiment with changing the 4 to a lower number.
+
+How would you modify the program to draw a triangle instead? What about a hexagon?
+
+If you're impatient, here is the solution:
+
+..  code-block:: python
+
+    def triangle(length):
+        n = 3
+        while n:
+            turtle.left(120)
+            turtle.forward(length)
+            n = n-1
+
+    def hexagon(length):
+        n = 6
+        while n:
+            turtle.left(60)
+            turtle.forward(length)
+            n = n-1
+        
+    triangle(150)
+    hexagon(150)
+    turtle.exitonclick()
+
+**Extra Credit**: Change the above code (or your own code!) so that the triangle and hexagon are drawn next to each other instead of overlapping.
+
+**Extra Credit Alternative**: Draw each line in a different color, asking the user what color they want for each one.
+
+Exercise 3
 ----------
 
 Play around with turtle! The `docs <http://docs.python.org/library/turtle.html>`_ will likely be helpful in this exercise. Try incorporating one new turtle function into your existing code. Try drawing different shapes. Use the interpreter to interactively take your turtle on an adventure around the screen.
