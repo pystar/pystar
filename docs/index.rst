@@ -59,4 +59,5 @@ Curriculum
    survey_pre_google
    survey_post_google
    previous_pystars
+   sponsors
 
