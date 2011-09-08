@@ -1,5 +1,5 @@
 =====================
-Badge: Setup Windows
+Setup Windows
 =====================
 
 

@@ -1,5 +1,5 @@
 =====================
-Badge: Setup Linux
+Setup Linux
 =====================
 
 

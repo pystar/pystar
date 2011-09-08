@@ -1,4 +1,4 @@
-Turtle Badge
+Turtle!
 ============
 
 Turtle graphics is a term for a method of programming vector graphics using a cursor (the "turtle") on a Cartesian plane. The `turtle module <http://docs.python.org/library/turtle.html>`_ is Python's implementation of this method. 

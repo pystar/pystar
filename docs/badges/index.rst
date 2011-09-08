@@ -10,9 +10,6 @@ List of Badges!
     :maxdepth: 1
 
     badge_reading_the_text
-    badge_setup_linux
-    badge_setup_mac
-    badge_setup_win
     badge_self_help
     badge_cmd_nav
     badge_inthebeginning

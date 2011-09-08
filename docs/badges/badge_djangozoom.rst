@@ -1,7 +1,7 @@
 .. _badge_djangozoom:
 
 ===============================
-DjangoZoom Deployment Badge
+DjangoZoom Deployment
 ===============================
 
 Synopsis!

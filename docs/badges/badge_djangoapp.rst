@@ -1,7 +1,7 @@
 .. _badge_webapp:
 
 =============================================
-Django Polls Webapp Tutorial
+Django Polls Webapp
 =============================================
 
 This tutorial will look at writing and deploying a web application. 
