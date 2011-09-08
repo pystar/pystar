@@ -17,7 +17,6 @@ of the workshop.
     badges/badge_setup_linux
     badges/badge_setup_mac
     badges/badge_setup_win
-    dependencies/dep-yourcomputer.rst
     dependencies/dep-python.rst
     dependencies/dep-gedit.rst
     dependencies/dep-git.rst

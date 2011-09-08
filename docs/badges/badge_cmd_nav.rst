@@ -1,4 +1,4 @@
-Command Line Navigation Badge
+Command Line Navigation
 ================================
 
 This badge is to learn how to navigate using the command line (CLI).
