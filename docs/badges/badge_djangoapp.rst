@@ -115,15 +115,10 @@ You can do that by typing this into your terminal:
 
     cd django_projects
 
-
 In the Friday setup portion of the workshop, you already saw how 
-to use the ``django-admin.py`` command to start a project. 
-Let's go into it and start looking around.
+to use the ``django-admin.py`` command to start a project. However, today, we're using a super basic Django project that has some of the less crucial settings already predefined. Download the files at `http://pystar.org/_downloads/myproject.tar.gz <http://pystar.org/_downloads/myproject.tar.gz>`_ and add the ``myproject`` folder to your ``django_projects`` directory.
 
-.. code-block:: bash
-
-    django-admin.py startproject myproject # if you haven't already got a my_project
-    cd myproject
+Let's go into ``myproject`` and start looking around.
 
 Look at the files
 -------------------------
@@ -204,7 +199,7 @@ Start the Development (Local) Server
 
         DATE  METHOD URL  PROTOCOL  RESPONSE_CODE  CONTENTSIZE
 
-#.  Navigate to http://127.0.0.1:8000/some/url/.  What changes in the 
+#.  Navigate to http://127.0.0.1:8000/some/url/.  What changes in the terminal log?
 
 #.  Exit the server 
 
@@ -221,11 +216,11 @@ Start the Development (Local) Server
         python manage.py runserver 
         python manage.py runserver 8000
 
-    *Start* a server on port 8103, and *navigate* to it using your browser
+    The '8000' number is the port on which the server runs, by default. *Start* a server on port 8103, and *navigate* to it using your browser
     [:ref:`answer <webapp_answers_8103>`].
 
 #.  Type ``python manage.py help``.  Speculate what some of these commands 
-    might do.  cf:  http://docs.djangoproject.com/en/dev/ref/django-admin/
+    might do.  For reference:  http://docs.djangoproject.com/en/dev/ref/django-admin/
 
 
 Part 3: Save your work!
@@ -253,18 +248,6 @@ We'll do that with ``git`` and ``Github``. On your own computer, get to a Termin
             # in myproject
             git init
 
-    #.  Tell git to ignore any files that end with .pyc (why?  [:ref:`answer <webapp_answers_pyc_files>`]) when we push
-        to our repo .  Add an exclude rule to ``.git/info/exclude``:
-
-        .. code-block:: bash
-
-            # in myproject directory
-            gedit .git/info/exclude
-            
-            # add this line to the end of the file
-            # excludes all compiled python files, which aren't interesting.
-            .pyc
-
     #.  Create your project on GitHub.  Go to http://github.com/ and create a new repository called "myproject". On the main dashboard page, click on "New Repository" fill out the necessary information. cf:  http://help.github.com/create-a-repo/.
 
 #.  Check the **status** of your files.  At this point:
@@ -279,10 +262,10 @@ We'll do that with ``git`` and ``Github``. On your own computer, get to a Termin
         # Untracked files:
         #   (use "git add <file>..." to include in what will be committed)
         #
-        #	__init__.py
-        #	manage.py
-        #	settings.py
-        #	urls.py
+        #   __init__.py
+        #   manage.py
+        #   settings.py
+        #   urls.py
         nothing added to commit but untracked files present (use "git add" to track)
 
     None of the files are **tracked**.  That is, ``git`` doesn't know about them!
@@ -319,8 +302,8 @@ We'll do that with ``git`` and ``Github``. On your own computer, get to a Termin
 
 #.  Remember:
 
-    - "commit your work" means "add and commit it to the local repository
-    - "push your work" means "git push it to github"
+    - "commit your work" means "add and commit it to the local repository on your computer"
+    - "push your work" means "git push it to github" (if your computer explodes, there will still be a copy of your code on github!)
 
 
 Part 4:  Configure your Django Project
@@ -329,15 +312,29 @@ Part 4:  Configure your Django Project
 Now that we have a the scaffolding for our **project** in place, we can get to 
 work!  It needs to be **configured**.
 
+Add yourself as an admin!
+------------------------------------
+
+#. Open  ``settings.py`` in your editor.  ``settings.py`` is a Python script that only contains variable definitions.  Django looks at the values of these variables when it runs your web app. The scaffold we wrote for you and Django's own 'startproject' command has specified some of these variables by default, though not all of them.
+
+#. Find ``ADMINS`` and replace ``Your Name`` and ``your_email@example.com`` with your name and your email address.
+
+#. Remove the pound mark from the front of the line to uncomment it out.
+
+#. git add and commit it:
+
+    .. code-block:: bash
+
+        git add settings.py
+        git commit -m "made myself an admin"
+
 Fix security settings
 ------------------------------------
 
 Right now, everyone in the workshop has the same "SECRET_KEY". Since Django 
 uses this key for various sensitive things, you should change it.
 
-#. Open  ``settings.py`` in your editor.  ``settings.py`` is a Python script that only contains variable definitions.  Django looks at the values of these variables when it runs your web app.
-
-#. Find the variable named ``SECRET_KEY`` and set it to whatever string 
+#. In ``settings.py,`` find the variable named ``SECRET_KEY`` and set it to whatever string 
    you want. 
 
 #. Verify it looks something like:
@@ -349,11 +346,11 @@ uses this key for various sensitive things, you should change it.
 
 #. How would we put a single-quote (\') in our SECRET_KEY?  [:ref:`answer <webapp_answers_single_quote>`]
 
-#. save the file.
+#. save the file
 
 #. git add and commit it:
 
-    .. code-block bash:
+    .. code-block:: bash
 
         git add settings.py
         git commit -m "changed SECRET_KEY"
@@ -369,8 +366,8 @@ Set up the Database
 
         DATABASES = {
             'default': {
-                'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-                'NAME': '',                      # Or path to database file if using sqlite3.
+                'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+                'NAME': 'database.db',                      # Or path to database file if using sqlite3.
                 'USER': '',                      # Not used with sqlite3.
                 'PASSWORD': '',                  # Not used with sqlite3.
                 'HOST': '',                      # Set to empty string for 127.0.0.1. Not used with sqlite3.
@@ -378,7 +375,7 @@ Set up the Database
             }
         }
 
-#.  Notice that the value of ``default`` is itself another dictionary with information about the site's default  database. We're going to set our app to use a ``sqlite`` database.
+#.  Notice that the value of ``default`` is itself another dictionary with information about the site's default  database. We've set our app to use a ``sqlite`` database, in the ``ENGINE`` attribute.
     Sqlite is great for development because is stores its data in one normal file on 
     your system and therefore is really simple to move around with your app.
 
@@ -386,13 +383,6 @@ Set up the Database
 
         In production, Sqlite has issues because only one process can *write* to it
         as a time.  **Discuss** the implications of this with your group.  [:ref:`answer <webapp_answers_sqlite_one_writer_implications>`]
-
-#.  Edit the lines in your settings.py to match the lines below:
-
-    .. code-block:: bash
-
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'database.db', 
 
     The ``NAME`` key tells the Django project to use a file called ``database.db`` to store information for this project.
 
@@ -416,6 +406,7 @@ Set up the Database
             # 'django.contrib.admin',
             # Uncomment the next line to enable admin documentation:
             # 'django.contrib.admindocs',
+              'south',
         )
 
     What do you think these various **apps** do?  Why does it make sense
@@ -447,7 +438,6 @@ Set up the Database
         Installing index for auth.User_user_permissions model
         Installing index for auth.User_groups model
         Installing index for auth.Message model
-        Installing index for polls.Choice model
         No fixtures found.
 
 
@@ -456,8 +446,7 @@ Set up the Database
 
 #.  **Pop quiz**: Does ``database.db`` exist right now?  Find out!  [:ref:`answer <webapp_answers_database_db_exists_after_sync>`]
 
-#.  Save *and commit* your work (don't save ``database.db`` -- 
-    why not?  [:ref:`answer <webapp_answers_why_not_save_database_db>`])::
+#.  Save *and commit* your work ::
 
         git status 
         # will show settings.py is changed, and a new 'untracked' 
@@ -467,13 +456,9 @@ Set up the Database
         #   (use "git add <file>..." to update what will be committed)
         #   (use "git checkout -- <file>..." to discard changes in working directory)
         #
-        #	modified:   settings.py
+        #   modified:   settings.py
         #
-        # Untracked files:
-        #   (use "git add <file>..." to include in what will be committed)
-        #
-        #	database.db
-        # file 'database.db'
+        # 
 
 #.  Drink some tea and take a stretch break.  Then we can come back to 
     STRETCHING OUR MINDS.
@@ -482,7 +467,7 @@ Set up the Database
 Part 5: In Which You Save You From Yourself, Using Git.
 =========================================================
 
-Your work is saved and commited (in git!) right?
+Your work is saved and committed (in git!) right?
 
 **Right?**  How do you know?  [:ref:`answer <webapp_answers_know_what_saved>`]
 
@@ -492,7 +477,7 @@ Good. Because you got a case of the accidental deletes and you've deleted your `
 
 #.  Try running your dev server. What happens? Why?
 
-#.  Delete ``settings.pyc``. Try running your dev server. What happens now? Why?  
+#.  Delete your ``settings.pyc`` file. Try running your dev server. What happens now? Why?  
     [:ref:`answer <webapp_answers_dev_server_still_works>`]
 
 #.  Cry!  So they're gone right? No way back. And everything's broken!
@@ -704,7 +689,7 @@ We will use this workflow throughout the following sections, as we add
 the features that our protype spec outlined.
 
 
-Part 9: Philosphy Break!
+Part 9: Philosophy Break!
 ===========================
 
 In the following sections, there will be **Django Philosophy** breaks to 
@@ -787,13 +772,7 @@ Add URLs to urls.py
 ------------------------
 
 When we ran ``django-admin.py startproject myproject`` to create the project, 
-Django created a default URLconf. Take a look at ``settings.py`` for this line:
-
-.. code-block:: bash
-
- ROOT_URLCONF = 'myproject.urls'
-
-That means that the default URLconf is ``myproject/urls.py``.
+Django created a default URLconf file called ```urls.py```.
 
 #.  Write our URL mapping. Edit the file ``myproject/urls.py`` so it looks like this:
 
@@ -858,7 +837,7 @@ That means that the default URLconf is ``myproject/urls.py``.
     
     (**Rant**:  In Django, as in most modern frameworks, you have total control
     over the way your URLs look. People on the web 
-    won't see cruft like .py or .php at the end of your URLs.  There is no
+    won't see cruft like .py or .php or even .html at the end of your URLs.  There is no
     excuse for that kind of stuff in the modern era!)
 
 #.  Exercise:  Think about another hypothetical website, "MyMagicToa.st", in which you use
@@ -969,13 +948,13 @@ These views don't plug into *real* polls.  This is by design.
 * demonstrating the UI of the product shouldn't rely on having full data in
   the back end.
 
-All of this relies on the frontend and backend having a concensus view
+All of this relies on the frontend and backend having a consensus view
 of the **interface** between them.  What does a 'Poll' look like?  What data
 and methods might it have?  If we knew this, we could construct **mock objects**
 and work with them, instead!  Keeping objects simple makes writing interfaces
 between different layers of the application stack easier.
 
-We will come back to templates (and use Django's build-in templating facilities
+We will come back to templates (and use Django's built-in templating facilities
 rather than simple python string formatting) after we build some models.
 
 
@@ -1129,6 +1108,29 @@ Finally, note a relationship is defined, using ``ForeignKey``. That tells Django
 ``Choice`` is related to a single ``Poll``. Django supports all the common database
 relationships: many-to-ones, many-to-manys and one-to-ones.
 
+Make the Models Migrate-able
+------------------------
+
+When you create your models, you might not always know exactly what fields your models will need in advance. Maybe someday your polls app will have multiple users, and you'll want to keep track of the author of each poll! Then you would want to add another field to the model to store that information.
+
+Unfortunately, Django (and most database-using software) can't figure out how to handle model changes very well on its own. Fortunately, a Django app called ```south``` can handle these changes--called 'migrations'--for us.
+
+Now that we've made our first version of our models file, let's set up our polls app to work with South so that we can make migrations with it in the future!
+
+#. On the command line, write:
+     
+    .. code-block:: bash
+        
+         $ python manage.py schemamigration polls --initial
+
+As you can see, that’s created a migrations directory for us, and made a new migration inside it. All we need to do now is apply our new migration:
+
+    .. code-block:: bash
+        
+         $ python manage.py migrate polls
+
+Great! Now our database file knows about polls and its new models, and if we need to change our models, South is set up to handle those change. We'll come back to South later.
+
 Activate The Models
 ------------------------
 
@@ -1148,24 +1150,18 @@ Commit!
 Add and commit all your work.
 
 
-Syncronise the Database
+Synchronize the Database
 --------------------------
 
 Now Django knows to include the polls app. 
 
-#.  Examine the SQL produced by the following command:
-
-    .. code-block:: bash
-
-        python manage.py sql polls
-
-#.  Create the tables for the ``polls`` app.
+#.  Let's make sure that our database is up to date.
 
     .. code-block:: bash
 
         python manage.py syncdb
 
-The syncdb looks for ``apps`` that have not yet been set up. To set them up, 
+The syncdb looks for ``apps`` that have not yet been set up, or have changed in ways that it can understand. To set them up, 
 it runs the necessary SQL commands against your database. This creates all the 
 tables, initial data and indexes for any apps you have added to your project since 
 the last time you ran syncdb. syncdb can be called as often as you like, and it 
@@ -1435,16 +1431,33 @@ Test the Models
 
 
 
-Explore the data!
----------------------
+Change the models
+-------------------
 
-#.  Poke the database directly, using Python::
+Oh no! Your client, VOEL, has decided that they want to add a feature to the spec for the polling app. Namely, it's not enough for them to know the poll question and creation date -- they want it to be possible for polls to have closing dates, after which voting on the poll is closed. Which means we're going to have to change our model.
 
-    >>> import sqlite3
-    >>> db = sqlite3.connect('database.db')
-    >>> sorted(list(db.execute('select name from sqlite_master')))
-    >>> sorted(list(db.execute('select * from polls_choice')))
+#. Open polls/models.py and edit the Poll class:
 
+    .. code-block:: python
+
+         class Poll(models.Model):
+             question = models.CharField(max_length=200)
+             pub_date = models.DateTimeField()
+             end_date = models.DateTimeField(blank=True,null=True)
+
+By setting ``blank=True`` and ``null=True``, we're telling Django that this field is optional, so it's okay if it's empty and a poll doesn't have an end date.
+
+#. Make a migration so the database knows about the new ``end_date`` field.
+
+    .. code-block:: bash
+
+         $ python manage.py schemamigration polls --auto
+
+#. Apply the migration.
+
+    .. code-block:: bash
+
+         $ python manage.py migrate polls
 
 Save and commit
 -------------------
@@ -1452,7 +1465,7 @@ Save and commit
 You know the drill!
 
 
-Forget about databases for now!
+Forget about data models for now!
 ------------------------------------
 
 #.  Did you eat lunch yet?
@@ -1557,6 +1570,17 @@ in the discuss of models.  (Sorry, I guess we can't forget about databases quite
          {% else %}
              <p>No polls are available.</p>
          {% endif %}
+         
+#. Edit ``TEMPLATE_DIRS`` in ``settings.py`` to have the full path to the templates folder inside your new app. On my computer, this looks like:
+    
+    .. code-block:: python
+        
+         TEMPLATE_DIRS = (
+            # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+            # Always use forward slashes, even on Windows.
+            # Don't forget to use absolute paths, not relative paths.
+            '/karen/Code/pystarl/django-projects/myproject/polls/templates',
+        )
 
 #.  Reload http://127.0.0.1:8000/polls/ . 
     You should see a bulleted-list containing some of the HEAVY METAL POLLS.
@@ -1606,7 +1630,7 @@ given poll.
 #.  Load a poll page that does not exist, to test out the 
     pretty 404 error: http://127.0.0.1:8000/polls/100000000000/
 
-    #.  What?  It says DEBUG has to be False?  All right, set it, and 
+    #.  What?  It says DEBUG has to be False?  All right, set it (in ``settings.py``), and 
         try again!
 
     #.  (note:  Chrome 'eats' the 404.  Safari will show our created page.)
@@ -1622,7 +1646,7 @@ given poll.
     illustrative.  404 is a blunt tool.  In a real application, maybe we
     would redirect the user to the 'create a poll' page, or the search page.
     
-    **Discuss** in your group what behaviour *should* happen in this case.
+    **Discuss** in your group what behavior *should* happen in this case.
     
     #. Why did the user land here?
     #. What did they expect to find?
@@ -1647,8 +1671,8 @@ Add More Detail to the Details
         </ul>
 
 
-#.  The ``djanogo.template`` system uses dot-lookup syntax to access variable attributes. 
-    Django's template language is a bit looser than standar python.
+#.  The ``django.template`` system uses dot-lookup syntax to access variable attributes. 
+    Django's template language is a bit looser than standard python.
     In pure Python, the ``.`` (dot) only 
     lets you get attributes from objects, and we would need to use `[]` to 
     access parts of ``list``, ``tuple`` or ``dict`` objects. 
@@ -1728,7 +1752,7 @@ Create the form
         normally accessible from within the template context. To fix this, a small adjustment 
         needs to be made to the detail view in the ``views.py`` file.
 
-        #. Fix ``views.py`` to protect against CRSF hacking:
+        #. Fix ``views.py`` to protect against CSRF hacking:
 
         .. code-block:: python
             
@@ -1971,102 +1995,7 @@ interface.
     typing ``Ctrl-C`` (``Ctrl-Break`` on Windows); then use the ``up`` arrow on your
     keyboard to find the command again, and hit enter.
 
-Explore the free admin functionality
--------------------------------------------------------
 
-Now that we've registered Poll, Django knows that it should be displayed on the admin index page.
-
-#.  Click "Polls." Now you're at the "change list" page for polls. This page displays all the polls 
-    in the database and lets you choose one to change it. There's the "What is the Weirdest Cookbook Ever?" poll we created in the first tutorial.
-
-    Things to note here:
-
-    * The form is automatically generated from the ``Poll`` model.
-    * The different model field types (``DateTimeField``, ``CharField``) correspond to the appropriate HTML input widget. Each type of field knows how to display itself in the Django admin.
-    * Each ``DateTimeField`` gets free JavaScript shortcuts. Dates get a "Today" shortcut and calendar popup, and times get a "Now" shortcut and a convenient popup that lists commonly entered times.
-
-    The bottom part of the page gives you a couple of options:
-
-    * Save -- Saves changes and returns to the change-list page for this type of object.
-    * Save and continue editing -- Saves changes and reloads the admin page for this object.
-    * Save and add another -- Saves changes and loads a new, blank form for this type of object.
-    * Delete -- Displays a delete confirmation page.
-
-#.  Change the "Date published" 
-
-    #.  the "Today" and "Now" shortcuts. 
-    #.  click "Save and continue editing."
-    #.  click "History" in the upper right. You'll see a page
-        listing all changes made to this object via the Django admin, with the timestamp and 
-        username of the person who made the change
-
-Adding related objects
------------------------------------
-
-OK, we have our ``Poll`` admin page. But a ``Poll`` has multiple ``Choices``, and the admin 
-page doesn't display choices.
-
-Yet.
-
-There are two ways to solve this problem. The first is to register Choice with the 
-admin just as we did with Poll. That's easy:
-
-.. code-block:: python
-    
-    from polls.models import Choice
-    
-    admin.site.register(Choice)
-    
-
-Now "Choices" is an available option in the Django admin. Check out the ``Add Choice`` form.
-
-In that form, the "Poll" field is a select box containing every poll in the database. 
-Django knows that a ``ForeignKey`` should be represented in the admin as a ``<select>``
-box. In our case, only one poll exists at this point.
-
-Also note the "Add Another" link next to "Poll." Every object with a ``ForeignKey``
-relationship to another gets this for free. When you click "Add Another," you'll get a
-popup window with the "Add poll" form. If you add a poll in that window and click 
-"Save," Django will save the poll to the database and dynamically add it as the selected
-choice on the "Add choice" form you're looking at.
-
-But, really, this is an inefficient way of adding Choice objects to the system. It'd be better 
-if you could add a bunch of Choices directly when you create the Poll object. Let's make 
-that happen.
-
-#.  Remove the register() call for the Choice model. 
-
-#.  Edit the ``polls/admin.py``  to read:
-
-    .. code-block:: python
-        
-        from polls.models import Poll
-        from django.contrib import admin
-        
-        class ChoiceInline(admin.StackedInline):
-            model = Choice
-            extra = 3
-        
-        class PollAdmin(admin.ModelAdmin):
-            fieldsets = [
-                (None,               {'fields': ['question']}),
-                ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
-            ]
-            inlines = [ChoiceInline]
-        
-        admin.site.register(Poll, PollAdmin)
-        
-
-    This tells Django: "Choice objects are edited on the Poll admin page. 
-    By default, provide enough fields for 3 choices."
-
-#.  Restart your development server
-
-#.  Load the "Add poll" page to see how that looks
-
-    It works like this: There are three slots for related Choices
-    -- as specified by extra -- and each time you come back to
-    the "Change" page for an already-created object, you get another three extra slots.
 
 Customize the admin change list
 --------------------------------------------------

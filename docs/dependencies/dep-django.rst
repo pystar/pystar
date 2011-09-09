@@ -1,5 +1,3 @@
-
-
 .. _dep-django-label:
 
 django
@@ -28,11 +26,12 @@ Get ``django``!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We don't want to install django system wide, but rather in our local
-virtualenv.  
+virtualenv. We're also going to install ``south``, a Django helper application which will make it easier for us to go back and edit our Django app later.
 
 .. code-block:: bash
 
     $ pip install django
+    $ pip install south
 
 .. _django-verify-label:
 
