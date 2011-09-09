@@ -636,7 +636,7 @@ Part 7: Test your Django Project
 
 #.  View ``polls/test.py``, and see the example test.
 
-#.  Copy :download:`test_polls.py <https://github.com/lsblakk/pystar/raw/master/docs/test_polls.py>`_ and move it into ``polls`` directory 
+#.  Copy `test_polls.py <https://github.com/pystar/pystar/raw/master/docs/test_polls.py>`_ and move it into ``polls`` directory 
 
 #.  Edit ``polls`` to include the tests from ``test_polls.py`` to look like:
 
@@ -1109,7 +1109,7 @@ Finally, note a relationship is defined, using ``ForeignKey``. That tells Django
 relationships: many-to-ones, many-to-manys and one-to-ones.
 
 Make the Models Migrate-able
-------------------------
+------------------------------------
 
 When you create your models, you might not always know exactly what fields your models will need in advance. Maybe someday your polls app will have multiple users, and you'll want to keep track of the author of each poll! Then you would want to add another field to the model to store that information.
 
