@@ -60,4 +60,5 @@ Curriculum
    survey_post_google
    previous_pystars
    sponsors
+   notes_and_tools
 
