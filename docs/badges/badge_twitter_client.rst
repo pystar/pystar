@@ -246,7 +246,7 @@ The easiest way to install the library is using pip:
 
 .. code-block:: bash
 
-  pip install python
+  pip install twython
 
 To use the library, first import the module at the top of your script:
 
