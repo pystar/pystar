@@ -252,7 +252,7 @@ To use the library, first import the module at the top of your script:
 
 .. code-block:: python
 
-  import twython
+  from twython.twython import Twython
 
 You can remove the import statements for ``urllib`` and ``json``,
 since the Twython library will take care of the URL opening
@@ -265,7 +265,8 @@ from the Twython library instead:
 .. code-block:: python
 
     query = sys.argv[1]
-    results = twython.Twitter().searchTwitter(q=query)
+    tw = Twython()
+    results = tw.searchTwitter(q=query)
     print_tweets(results['results'])
 
 
