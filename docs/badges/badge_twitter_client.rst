@@ -63,7 +63,7 @@ What's JSON?
 As you've seen, the request to an HTTP API is often just the URL with some query parameters. The response from an API is data and that data can come in various formats, with the most popular being XML and JSON. Many HTTP APIs support multiple response formats, so that developers can choose the one they're more comfortable parsing.
 
 For example, the Twitter API lets you request "atom" format, which is XML:
-http://search.twitter.com/search.json?q=pystar
+http://search.twitter.com/search.atom?q=pystar
 
 Their default response is JSON, which is increasingly popular amongst developers, and is easier to parse in Python than XML. JSON stands for "JavaScript Object Notation" and is the native way of representing objects in JavaScript - so it will look familiar to those of you who know JS. Even if you don't, however, JSON is a fairly intuitive format to understand. JSON is a hierarchy of key/value pairs, where each key is a string and each value is a string, number, boolean, or array.
 
@@ -131,6 +131,13 @@ In your Python file, add this to the top:
   import json
 
 The ``json`` module gives us functionality for parsing JSON into Python data structures.
+
+Instead of printing what is read from the url, we'll store it in response:
+
+.. code-block:: python
+
+  url = 'http://search.twitter.com/search.json?q=python'
+  response = urllib.urlopen(url).read()
 
 Then add these lines to the bottom:
 
