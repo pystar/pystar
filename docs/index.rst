@@ -21,9 +21,7 @@ https://github.com/pystar/pystar and do a pull request or ask to become a collab
 PyStar SF
 ------------
 
-September 10, 2011 from 9am to 4pm
-
-Register at: http://www.eventbrite.com/event/2084750545
+Nothing currently planned.
 
 follow @Pystar_Promo on Twitter for updates.
 
@@ -36,7 +34,9 @@ Please check back for updates
 PyStar Minneapolis
 ------------------
 
-Please check back for updates.
+Saturday, December 17, 2011 from 10:00 AM to 4:00 PM
+
+Register at: http://pystar-mpls-4.eventbrite.com/
 
 
 Curriculum
