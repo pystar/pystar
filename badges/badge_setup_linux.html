@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Setup Linux &mdash; PyStar: Programming Workshops for Women and Their Friends</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://tablesorter.googlecode.com/svn/trunk/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.twitter.mentions/jquery.twitter.mentions.js"></script>
+    <script type="text/javascript" src="../_static/js/pystar.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.socialbutton-1.7.1.js"></script>
+    <link rel="shortcut icon" href="../_static/pystar_flaming_32_150px.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="PyStar: Programming Workshops for Women and Their Friends" href="../index.html" />
+    <link rel="up" title="Setup Your Machine!" href="../setup_machine.html" />
+    <link rel="next" title="Setup Mac" href="badge_setup_mac.html" />
+    <link rel="prev" title="Setup Your Machine!" href="../setup_machine.html" />
+     
+    <link rel="stylesheet" href="../_static/pystar.css" type="text/css" /> 
+    <link rel="stylesheet" href="../_static/css/twitter-mentions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/tablesorter_blue_skin/style.css" type="text/css" /> 
+
+
+  </head>
+  <body>
+    
+    <div class="header-wrapper">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/pystar_flaming_160_150px.png" alt="Logo"/>
+          </a></p>
+        <h1><a href="../index.html">PyStar: Programming Workshops for Women and Their Friends</a></h1>
+        <div class="rel">
+          <a href="../setup_machine.html" title="Setup Your Machine!"
+             accesskey="P">previous</a> |
+          <a href="badge_setup_mac.html" title="Setup Mac"
+             accesskey="N">next</a>
+        </div>
+       </div>
+    </div>
+
+    <div style="position: absolute; top:0px; right:0px">
+    <a href="https://github.com/pystar/pystar"><img src="../_static/img/forkme_right_darkblue_121621.png" /></a>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="setup-linux">
+<h1>Setup Linux<a class="headerlink" href="#setup-linux" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="your-computer">
+<span id="badge-setup-linux-label"></span><h2>Your Computer<a class="headerlink" href="#your-computer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-your-computer">
+<span id="badge-setup-linux-what-label"></span><h3>What is Your Computer?<a class="headerlink" href="#what-is-your-computer" title="Permalink to this headline">¶</a></h3>
+<p>Your computer is the thing you are reading and typing on :)  You should know
+a few things about it before we go much further.</p>
+</div>
+<div class="section" id="why-do-i-need-my-computer">
+<span id="badge-setup-linux-why-label"></span><h3>Why do I need my Computer?<a class="headerlink" href="#why-do-i-need-my-computer" title="Permalink to this headline">¶</a></h3>
+<p>Starting development work requires at least a passing familiarity with what is
+happening inside your machine, what software is installed, and where to look
+next for help!</p>
+</div>
+<div class="section" id="get-information-about-your-computer">
+<span id="badge-setup-linux-how-label"></span><h3>Get information about your computer!<a class="headerlink" href="#get-information-about-your-computer" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Figure out your OS and version</p>
+</li>
+<li><p class="first">sudo privilege is pretty helpful</p>
+</li>
+<li><p class="first">Check to see that you have at least 1 Gb of disk space left.</p>
+</li>
+<li><p class="first">Start up a terminal. You can find the Terminal application at <cite>Applications/Accessories/Terminal</cite>, or it may already be on your menu bar. In your terminal:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>uname -a
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="verify-it-works">
+<span id="badge-setup-linux-verify-label"></span><h3>Verify It Works!<a class="headerlink" href="#verify-it-works" title="Permalink to this headline">¶</a></h3>
+<p>Know your OS and version number?  Good!</p>
+</div>
+</div>
+<div class="section" id="command-line-interface">
+<span id="badge-setup-linux-cli-label"></span><h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-command-line-interface-cli">
+<span id="badge-setup-linux-cli-what-label"></span><h3>What is a Command Line Interface (CLI)?<a class="headerlink" href="#what-is-a-command-line-interface-cli" title="Permalink to this headline">¶</a></h3>
+<p>A command line interface (CLI) is way of interacting with a computer by typing
+commands. DOS is an example of a command line interface.</p>
+</div>
+<div class="section" id="why-do-i-need-a-command-line-interface-cli">
+<span id="badge-setup-linux-cli-why-label"></span><h3>Why do I need a Command Line Interface (CLI)?<a class="headerlink" href="#why-do-i-need-a-command-line-interface-cli" title="Permalink to this headline">¶</a></h3>
+<p>Many development tools don&#8217;t have graphic user interfaces&#8211;they only have
+command line interfaces.</p>
+</div>
+<div class="section" id="get-a-command-line-interface-cli">
+<span id="badge-setup-linux-cli-how-label"></span><h3>Get a Command Line Interface (CLI)!<a class="headerlink" href="#get-a-command-line-interface-cli" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Linux comes with a command line interface included!</li>
+<li>The program used to access the CLI is often called a &#8220;terminal&#8221;.</li>
+</ol>
+</div>
+<div class="section" id="badge-setup-linux-cli-verify-label">
+<span id="id1"></span><h3>Verify It Works!<a class="headerlink" href="#badge-setup-linux-cli-verify-label" title="Permalink to this headline">¶</a></h3>
+<p>Start up a terminal. You can find the Terminal application at <cite>Applications/Accessories/Terminal</cite>, or it may already be on your menu bar. In your terminal:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>bash --version
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="gedit">
+<span id="badge-setup-linux-gedit-label"></span><h2>gedit<a class="headerlink" href="#gedit" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-gedit">
+<span id="badge-setup-linux-gedit-what-label"></span><h3>What is <tt class="docutils literal"><span class="pre">gedit</span></tt>?<a class="headerlink" href="#what-is-gedit" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">gedit</span></tt> is a cross-platform, syntax-highlighting text editor.</p>
+</div>
+<div class="section" id="why-do-i-need-gedit">
+<span id="badge-setup-linux-gedit-why-label"></span><h3>Why do I need <tt class="docutils literal"><span class="pre">gedit</span></tt>?<a class="headerlink" href="#why-do-i-need-gedit" title="Permalink to this headline">¶</a></h3>
+<p>To write your code in!  Word is a fine program, but it is not a text editor.</p>
+</div>
+<div class="section" id="get-gedit">
+<span id="badge-setup-linux-gedit-how-label"></span><h3>Get <tt class="docutils literal"><span class="pre">gedit</span></tt>!<a class="headerlink" href="#get-gedit" title="Permalink to this headline">¶</a></h3>
+<p>Gedit is probably installed on your machine already.</p>
+<ul class="simple">
+<li>Ubuntu/Debian:  <a class="reference external" href="https://help.ubuntu.com/community/gedit">https://help.ubuntu.com/community/gedit</a> and follow the instructions</li>
+<li>Redhat:  <tt class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">gedit</span></tt></li>
+<li>Build form source:  <a class="reference external" href="http://ftp.gnome.org/pub/GNOME/sources/gedit/2.30/gedit-2.30.2.tar.gz">http://ftp.gnome.org/pub/GNOME/sources/gedit/2.30/gedit-2.30.2.tar.gz</a></li>
+</ul>
+</div>
+<div class="section" id="badge-setup-linux-gedit-verify-label">
+<span id="id2"></span><h3>Verify It Works!<a class="headerlink" href="#badge-setup-linux-gedit-verify-label" title="Permalink to this headline">¶</a></h3>
+<p>After installing, start <tt class="docutils literal"><span class="pre">gedit</span></tt> up by clicking on its icon, typing <tt class="docutils literal"><span class="pre">gedit</span></tt> from your cli or the like.</p>
+<p>Suggested configuration:</p>
+<p>In the preferences window</p>
+<ul>
+<li><p class="first"><strong>view</strong>, turn on:</p>
+<blockquote>
+<div><ul class="simple">
+<li>display line numbers</li>
+<li>display right margin</li>
+<li>highlight matching bracket</li>
+<li>highlight current line</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>editor</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>change tab with to 4</li>
+<li>check the box to insert spaces instead of tabs</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>font &amp; colors</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>choose a good monospace editor font</li>
+<li>choose a color scheme (Gregg likes Cobalt)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>plugins</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>checkupdate</li>
+<li>code comment</li>
+<li>drawspaces</li>
+<li>filebrowser</li>
+<li>indentlines</li>
+<li>python console</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Once you are satified, restart <tt class="docutils literal"><span class="pre">gedit</span></tt>.  If it looks similar to the screenshot below, you are done!</p>
+<img alt="../_images/configured-gedit.png" src="../_images/configured-gedit.png" />
+</div>
+</div>
+<div class="section" id="python">
+<span id="badge-setup-linux-python-label"></span><h2>python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-python">
+<span id="badge-setup-linux-python-what-label"></span><h3>What is <tt class="docutils literal"><span class="pre">python</span></tt>?<a class="headerlink" href="#what-is-python" title="Permalink to this headline">¶</a></h3>
+<p>Python is a general purpose, dynamically-typed, strongly-typed, interpreted
+computer programming language.</p>
+</div>
+<div class="section" id="why-do-i-need-python">
+<span id="badge-setup-linux-python-why-label"></span><h3>Why do I need <tt class="docutils literal"><span class="pre">python</span></tt>?<a class="headerlink" href="#why-do-i-need-python" title="Permalink to this headline">¶</a></h3>
+<p>Well, this is a Python progammming workshop!</p>
+</div>
+<div class="section" id="get-python">
+<span id="badge-setup-linux-python-how-label"></span><h3>Get <tt class="docutils literal"><span class="pre">python</span></tt>!<a class="headerlink" href="#get-python" title="Permalink to this headline">¶</a></h3>
+<p>Linux comes with Python installed!</p>
+</div>
+<div class="section" id="badge-setup-linux-python-verify-label">
+<span id="id3"></span><h3>Verify It Works!<a class="headerlink" href="#badge-setup-linux-python-verify-label" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Start up a terminal. You can find the Terminal application at <cite>Applications/Accessories/Terminal</cite>, or it may already be on your menu bar.</p>
+</li>
+<li><p class="first">Test your Python install at the command prompt. Type <tt class="docutils literal"><span class="pre">python</span></tt> and hit enter. You should see something like:</p>
+<div class="highlight-python"><pre>Python 2.5.2 (r252:60911, Jan 24 2010, 17:44:40)
+[GCC 4.3.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;</pre>
+</div>
+</li>
+</ol>
+<p>To exit the Python prompt, type <tt class="docutils literal"><span class="pre">exit()</span></tt>
+and press Enter. This will take you back to the Terminal command prompt.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_organizers.html">Advice for Organizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../safer_space.html">Safer Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_learners.html">Advice for Learners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_guides.html">Advice for Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Badges</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../setup_machine.html">Setup Your Machine!</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Setup Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="badge_setup_mac.html">Setup Mac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="badge_setup_win.html">Setup Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-python.html">python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-gedit.html">gedit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-git.html">git, sshkeys, github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-virtualenv.html">virtualenv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-pip.html">pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dependencies/dep-django.html">django</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_pre_google.html">Pre-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_post_google.html">Post-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../previous_pystars.html">Previous Pystars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sponsors.html">Sponsors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes_and_tools.html">Notes and Tools</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Twitter</h3>
+            <div id='twitter-area'>[twitter]</div>
+
+          
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../setup_machine.html" title="Setup Your Machine!"
+             >previous</a> |
+          <a href="badge_setup_mac.html" title="Setup Mac"
+             >next</a>
+            <br/>
+            <a href="../_sources/badges/badge_setup_linux.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Last updated on Dec 08, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
