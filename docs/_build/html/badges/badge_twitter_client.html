@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Twitter Search Client &mdash; PyStar: Programming Workshops for Women and Their Friends</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://tablesorter.googlecode.com/svn/trunk/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.twitter.mentions/jquery.twitter.mentions.js"></script>
+    <script type="text/javascript" src="../_static/js/pystar.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.socialbutton-1.7.1.js"></script>
+    <link rel="shortcut icon" href="../_static/pystar_flaming_32_150px.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="PyStar: Programming Workshops for Women and Their Friends" href="../index.html" />
+    <link rel="up" title="Badges" href="index.html" />
+    <link rel="next" title="Graphing with Matplotlib" href="badge_matplotlib.html" />
+    <link rel="prev" title="Edit Basic Html" href="badge_edit_html.html" />
+     
+    <link rel="stylesheet" href="../_static/pystar.css" type="text/css" /> 
+    <link rel="stylesheet" href="../_static/css/twitter-mentions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/tablesorter_blue_skin/style.css" type="text/css" /> 
+
+
+  </head>
+  <body>
+    
+    <div class="header-wrapper">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/pystar_flaming_160_150px.png" alt="Logo"/>
+          </a></p>
+        <h1><a href="../index.html">PyStar: Programming Workshops for Women and Their Friends</a></h1>
+        <div class="rel">
+          <a href="badge_edit_html.html" title="Edit Basic Html"
+             accesskey="P">previous</a> |
+          <a href="badge_matplotlib.html" title="Graphing with Matplotlib"
+             accesskey="N">next</a>
+        </div>
+       </div>
+    </div>
+
+    <div style="position: absolute; top:0px; right:0px">
+    <a href="https://github.com/pystar/pystar"><img src="../_static/img/forkme_right_darkblue_121621.png" /></a>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="twitter-search-client">
+<span id="badge-twitter"></span><h1>Twitter Search Client<a class="headerlink" href="#twitter-search-client" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will cover using the <tt class="docutils literal"><span class="pre">urllib</span></tt> module with HTTP APIs (Twitter, in this case), using the <tt class="docutils literal"><span class="pre">json</span></tt> module to parse JSON API responses, and how to make your life easier by using wrapper libraries.</p>
+<div class="section" id="what-s-an-api">
+<h2>What&#8217;s an API?<a class="headerlink" href="#what-s-an-api" title="Permalink to this headline">¶</a></h2>
+<p>Many websites offer what is called an API (&#8220;Application Programming Interface&#8221;) which lets developers like you integrate with their site and build applications on top of their functionality or data. Often, an API gives you ways to authenticate on behalf of a user so that you can perform actions on their data.</p>
+<p>Twitter offers an API for both un-authenticated actions, like searching public tweets, and for authenticated actions, like posting and replying. There are hundreds (or thousands) of Twitter clients built by non-Twitter developers that use the API, and these clients often feature a different interface or specialized set of functionality than what Twitter.com offers. In this tutorial, we will use the Twitter API methods that don&#8217;t require authentication, for simplicity&#8217;s sake.</p>
+<p>Developers interact with an API by using HTTP. It varies depending on the particular API, but basically, you make an HTTP request (usually GET or POST) to a specified URL, optionally attaching some data, and you parse the response.</p>
+<p>For example, if you want to find the recent tweets for &#8216;pystar&#8217; using the Twitter API, you can put this URL in your browser:</p>
+<p><a class="reference external" href="http://search.twitter.com/search.json?q=pystar">http://search.twitter.com/search.json?q=pystar</a></p>
+<p>You should see the JSON response (don&#8217;t worry if it looks crazy, we&#8217;ll explain it soon).</p>
+<p>If you wanted to instead find recent tweets for &#8216;python&#8217;, you could change the value of the &#8216;q&#8217; parameter at the end of the URL:
+<a class="reference external" href="http://search.twitter.com/search.json?q=python">http://search.twitter.com/search.json?q=python</a></p>
+<p>The Twitter search API is an example of an &#8220;RPC&#8221; API. &#8220;RPC&#8221; stands for &#8220;Remote Procedure Call&#8221; and conceptually means that we&#8217;re calling a method on another server and passing in arguments. In this case, we&#8217;re calling the &#8216;search&#8217; method on the Twitter server and our argument is the &#8216;q&#8217; parameter.</p>
+</div>
+<div class="section" id="how-do-we-use-apis-in-python">
+<h2>How do we use APIs in Python?<a class="headerlink" href="#how-do-we-use-apis-in-python" title="Permalink to this headline">¶</a></h2>
+<p>Now, let&#8217;s try to get the same results that we got in the browser using Python.</p>
+<p>Start a new python file <tt class="docutils literal"><span class="pre">twitter_search.py</span></tt> and copy this code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">urllib</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://search.twitter.com/search.json?q=python&#39;</span>
+<span class="k">print</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">urllib</span></tt> module gives us functionality to make HTTP requests, so we import it at the top. Then we store the URL in a variable, we use the <tt class="docutils literal"><span class="pre">urlopen</span></tt> method to hit up the URL and the <tt class="docutils literal"><span class="pre">read()</span></tt> method to read the response.
+For now, we&#8217;ll simply print it out to the screen to see if it worked.</p>
+<p>Try it out by just running the script from the command line:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python twitter_search.py
+</pre></div>
+</div>
+<p>If it worked, you should see the same thing you saw in the browser.</p>
+<p>You can also try changing the search URL to see the results change.</p>
+<p>Now, let&#8217;s talk about that crazy looking response...</p>
+</div>
+<div class="section" id="what-s-json">
+<h2>What&#8217;s JSON?<a class="headerlink" href="#what-s-json" title="Permalink to this headline">¶</a></h2>
+<p>As you&#8217;ve seen, the request to an HTTP API is often just the URL with some query parameters. The response from an API is data and that data can come in various formats, with the most popular being XML and JSON. Many HTTP APIs support multiple response formats, so that developers can choose the one they&#8217;re more comfortable parsing.</p>
+<p>For example, the Twitter API lets you request &#8220;atom&#8221; format, which is XML:
+<a class="reference external" href="http://search.twitter.com/search.atom?q=pystar">http://search.twitter.com/search.atom?q=pystar</a></p>
+<p>Their default response is JSON, which is increasingly popular amongst developers, and is easier to parse in Python than XML. JSON stands for &#8220;JavaScript Object Notation&#8221; and is the native way of representing objects in JavaScript - so it will look familiar to those of you who know JS. Even if you don&#8217;t, however, JSON is a fairly intuitive format to understand. JSON is a hierarchy of key/value pairs, where each key is a string and each value is a string, number, boolean, or array.</p>
+<p>Here&#8217;s a JSON describing a person&#8217;s information:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span><span class="s2">&quot;firstName&quot;</span><span class="o">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;lastName&quot;</span><span class="o">:</span> <span class="s2">&quot;Smith&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;address&quot;</span><span class="o">:</span> <span class="p">{</span>
+   <span class="s2">&quot;streetAddress&quot;</span><span class="o">:</span> <span class="s2">&quot;21 2nd Street&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;city&quot;</span><span class="o">:</span> <span class="s2">&quot;New York&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;state&quot;</span><span class="o">:</span> <span class="s2">&quot;NY&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;postalCode&quot;</span><span class="o">:</span> <span class="mi">10021</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;phoneNumbers&quot;</span><span class="o">:</span> <span class="p">[</span>
+   <span class="s2">&quot;212 732-1234&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;646 123-4567&quot;</span> <span class="p">]</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>The names are string values, the address is another object with string values,
+and the phone numbers is an array of string values.</p>
+<p>When we looked at the Twitter API response in the last section, the response was JSON (just a whole lot more of it). Some browsers don&#8217;t &#8220;pretty format&#8221; JSON, so it can be hard to look at in the browser when you&#8217;re a mere human. If you&#8217;re in Chrome, download the JSONView Chrome extension for pretty formatting:
+<a class="reference external" href="https://chrome.google.com/webstore/detail/chklaanhfefbnpoihckbnefhakgolnmc">https://chrome.google.com/webstore/detail/chklaanhfefbnpoihckbnefhakgolnmc</a></p>
+<p>Now, take another look at the search API response in the browser:
+<a class="reference external" href="http://search.twitter.com/search.json?q=python">http://search.twitter.com/search.json?q=python</a></p>
+<p>You should see something like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+ <span class="nx">completed_in</span><span class="o">:</span> <span class="mf">0.099</span>
+ <span class="nx">max_id</span><span class="o">:</span> <span class="mi">111626724697063420</span>
+ <span class="nx">max_id_str</span><span class="o">:</span> <span class="s2">&quot;111626724697063424&quot;</span>
+ <span class="nx">next_page</span><span class="o">:</span> <span class="s2">&quot;?page=2&amp;max_id=111626724697063424&amp;q=python&quot;</span>
+ <span class="nx">page</span><span class="o">:</span> <span class="mi">1</span>
+ <span class="nx">query</span><span class="o">:</span> <span class="s2">&quot;python&quot;</span>
+ <span class="nx">refresh_url</span><span class="o">:</span> <span class="s2">&quot;?since_id=111626724697063424&amp;q=python&quot;</span>
+ <span class="nx">results</span><span class="o">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+  <span class="nx">created_at</span><span class="o">:</span> <span class="s2">&quot;Thu, 08 Sep 2011 02:27:39 +0000&quot;</span>
+  <span class="nx">from_user</span><span class="o">:</span> <span class="s2">&quot;akamrsjojo&quot;</span>
+  <span class="nx">from_user_id</span><span class="o">:</span> <span class="mi">32455649</span>
+  <span class="nx">geo</span><span class="o">:</span> <span class="kc">null</span>
+  <span class="nx">id</span><span class="o">:</span> <span class="mi">111626724697063420</span>
+  <span class="nx">iso_language_code</span><span class="o">:</span> <span class="s2">&quot;en&quot;</span>
+  <span class="nx">profile_image_url</span><span class="o">:</span> <span class="s2">&quot;http://a0.twimg.com/profile_images/1520692851/akamrsjojo_normal.jpg&quot;</span>
+  <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;#Win Christian Louboutin Sueded Python Pump http://t.co/vr5C6St via @AddThis&quot;</span>
+  <span class="p">},</span> <span class="p">...</span>
+ <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-do-we-parse-json-in-python">
+<h2>How do we parse JSON in Python?<a class="headerlink" href="#how-do-we-parse-json-in-python" title="Permalink to this headline">¶</a></h2>
+<p>Now let&#8217;s parse some data from that response using Python.</p>
+<p>In your Python file, add this to the top:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">json</span></tt> module gives us functionality for parsing JSON into Python data structures.</p>
+<p>Instead of printing what is read from the url, we&#8217;ll store it in response:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://search.twitter.com/search.json?q=python&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then add these lines to the bottom:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;text&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Here, we&#8217;re telling the json module to convert the string response, then we&#8217;re storing the results array and printing the text of the first result tweet.</p>
+<p>Run the code - you should see the full results and the tweet at the bottom. If you want, remove the first print statement so you just see the tweet.</p>
+<p>Now, let&#8217;s show all the tweets (and the usernames) using a for loop to iterate through the results array. Add these lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+  <span class="k">print</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;from_user&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+</pre></div>
+</div>
+<p>Run the code, and you should see a bunch of mildly entertaining tweets. Try adding the timestamp to the tweets to see if you understand the JSON response.</p>
+</div>
+<div class="section" id="let-s-make-the-client">
+<h2>Let&#8217;s make the client!<a class="headerlink" href="#let-s-make-the-client" title="Permalink to this headline">¶</a></h2>
+<p>Now that we are successfully showing Twitter API search results, let&#8217;s turn our script into a proper command-line client, so that you can search Twitter from your Terminal all day long!</p>
+<p>First, let&#8217;s structure the code into functions to be a bit cleaner.
+Replace your code with this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">search_twitter</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s">&#39;python&#39;</span><span class="p">):</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://search.twitter.com/search.json?q=&#39;</span> <span class="o">+</span> <span class="n">query</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">print_tweets</span><span class="p">(</span><span class="n">tweets</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">tweet</span><span class="p">[</span><span class="s">&#39;from_user&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="n">tweet</span><span class="p">[</span><span class="s">&#39;text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">search_twitter</span><span class="p">()</span>
+<span class="n">print_tweets</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We&#8217;ve made two functions - <tt class="docutils literal"><span class="pre">search_twitter</span></tt> takes one argument
+(falling back to &#8216;python&#8217; if none is specified) and returns the array
+of results from Twitter, and <tt class="docutils literal"><span class="pre">print_tweets</span></tt> prints results to the screen,
+We could do this as one function, but it&#8217;s nice to separate
+functionality from presentation.</p>
+<p>At the end, we just call these functions, passing the results from the first
+function as the argument to the second.</p>
+<p>Try that out and make sure it works. Try sending in a different argument
+to the <tt class="docutils literal"><span class="pre">search_twitter</span></tt> function and see that it works.</p>
+<p>Now, let&#8217;s make it so we can send in the query argument from the command line.</p>
+<p>Add this import to the top:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">sys</span></tt> module gives us access to the passed in arguments.</p>
+<p>Now replace the last two lines with this code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">query</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">search_twitter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+  <span class="n">print_tweets</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That code passes in the first argument to the <tt class="docutils literal"><span class="pre">search_twitter</span></tt> function and prints the results.</p>
+<p>Try running your script, but specifying different queries, like so:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python twitter_search.py love
+python twitter_search.py snakes
+</pre></div>
+</div>
+<p>You may soon lose faith in the intelligence of humanity, but atleast you should now feel good about your own intelligence. :)</p>
+</div>
+<div class="section" id="using-a-wrapper-library">
+<h2>Using a wrapper library<a class="headerlink" href="#using-a-wrapper-library" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;re not the first developer to use the Twitter search API from Python -
+and it&#8217;s a bit silly for every developer to write their own functions for
+interacting with the API. Most developers use &#8220;wrapper libraries&#8221;
+or &#8220;client libraries&#8221; for interacting with HTTP APIs in their favorite language,
+and those libraries are either provided by the API provider themselves or
+by other developers. By using a wrapper library, you can focus on writing the unique
+part of your app and not fuss over the subtleties of an API.</p>
+<p>Twitter maintains a list of developer-created libraries here - with 5 listed for Python alone:
+<a class="reference external" href="https:/dev.twitter.com/docs/twitter-libraries#python">https:/dev.twitter.com/docs/twitter-libraries#python</a></p>
+<p>Let&#8217;s try using the &#8216;Twython&#8217; library, since that has a clever name:
+<a class="reference external" href="https://github.com/ryanmcgrath/twython">https://github.com/ryanmcgrath/twython</a></p>
+<p>The easiest way to install the library is using pip:</p>
+<div class="highlight-bash"><div class="highlight"><pre>pip install twython
+</pre></div>
+</div>
+<p>To use the library, first import the module at the top of your script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">twython.twython</span> <span class="kn">import</span> <span class="n">Twython</span>
+</pre></div>
+</div>
+<p>You can remove the import statements for <tt class="docutils literal"><span class="pre">urllib</span></tt> and <tt class="docutils literal"><span class="pre">json</span></tt>,
+since the Twython library will take care of the URL opening
+and JSON conversion for us.</p>
+<p>Next, remove the <tt class="docutils literal"><span class="pre">search_twitter</span></tt> function and replace the
+main functionality with code that calls the search function
+from the Twython library instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">query</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">tw</span> <span class="o">=</span> <span class="n">Twython</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">tw</span><span class="o">.</span><span class="n">searchTwitter</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="n">print_tweets</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-now">
+<h2>What now?<a class="headerlink" href="#what-now" title="Permalink to this headline">¶</a></h2>
+<p>Great work! You now have a command line Twitter search client.
+Here are some ideas for ways you can extend this code to do more:</p>
+<div class="section" id="add-support-for-more-search-options">
+<h3>Add support for more search options:<a class="headerlink" href="#add-support-for-more-search-options" title="Permalink to this headline">¶</a></h3>
+<p>So far, we&#8217;ve only been passing in one parameter to the Twitter search API,
+the <tt class="docutils literal"><span class="pre">q</span></tt> argument. As is common with HTTP APIs, the API lets you specify
+multiple parameters, and it documents them in their API reference:
+<a class="reference external" href="https://dev.twitter.com/docs/api/1/get/search">https://dev.twitter.com/docs/api/1/get/search</a></p>
+<p>For example, you can specify the <tt class="docutils literal"><span class="pre">lang</span></tt> argument to get tweets in a particular language, like &#8220;lang=es&#8221; for Spanish tweets:
+<a class="reference external" href="http://search.twitter.com/search.json?q=python&amp;lang=es">http://search.twitter.com/search.json?q=python&amp;lang=es</a></p>
+<p>Modify your client so you can specify options like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python search_twitter.py python --lang<span class="o">=</span>es
+</pre></div>
+</div>
+<p>You can use the <a class="reference external" href="http://docs.python.org/library/argparse.html">argparse</a> module if you&#8217;re using Python 2.7 or the <cite>argparse_</cite> module if you&#8217;re using Python 2.6.</p>
+</div>
+<div class="section" id="add-support-for-more-twitter-api-methods">
+<h3>Add support for more Twitter API methods:<a class="headerlink" href="#add-support-for-more-twitter-api-methods" title="Permalink to this headline">¶</a></h3>
+<p>The Twitter API offers several other methods that can be accessed without user authentication,
+like getting all the tweets for a particular user and listing current trends.
+Their API reference here lists all the method:
+<a class="reference external" href="https://dev.twitter.com/docs/api">https://dev.twitter.com/docs/api</a></p>
+<p>Modify your client so you can call other methods, maybe like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python search_twitter.py --username<span class="o">=</span>pamelafox
+python search_twitter.py --search<span class="o">=</span>python
+</pre></div>
+</div>
+<p>You can use the <a class="reference external" href="http://docs.python.org/library/argparse.html">argparse</a> module if you&#8217;re using Python 2.7 or the <cite>argparse_</cite> module if you&#8217;re using Python 2.6.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_organizers.html">Advice for Organizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../safer_space.html">Safer Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_learners.html">Advice for Learners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_guides.html">Advice for Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Badges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup_machine.html">Setup Your Machine!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_pre_google.html">Pre-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_post_google.html">Post-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../previous_pystars.html">Previous Pystars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sponsors.html">Sponsors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes_and_tools.html">Notes and Tools</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Twitter</h3>
+            <div id='twitter-area'>[twitter]</div>
+
+          
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="badge_edit_html.html" title="Edit Basic Html"
+             >previous</a> |
+          <a href="badge_matplotlib.html" title="Graphing with Matplotlib"
+             >next</a>
+            <br/>
+            <a href="../_sources/badges/badge_twitter_client.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Last updated on Dec 08, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
