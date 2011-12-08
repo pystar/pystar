@@ -1,0 +1,14 @@
+
+pre {
+    overflow: auto;
+}
+
+.answerheader {
+    color:  #ce5c00;
+
+}
+
+.answer-hidden {
+    border:  1px dotted #ce5c00;
+}
+

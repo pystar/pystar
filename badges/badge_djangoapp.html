@@ -1,0 +1,2093 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Django Polls Webapp &mdash; PyStar: Programming Workshops for Women and Their Friends</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://tablesorter.googlecode.com/svn/trunk/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.twitter.mentions/jquery.twitter.mentions.js"></script>
+    <script type="text/javascript" src="../_static/js/pystar.js"></script>
+    <script type="text/javascript" src="../_static/js/third_party/jquery.socialbutton-1.7.1.js"></script>
+    <link rel="shortcut icon" href="../_static/pystar_flaming_32_150px.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="PyStar: Programming Workshops for Women and Their Friends" href="../index.html" />
+    <link rel="up" title="Badges" href="index.html" />
+    <link rel="next" title="DjangoZoom Deployment" href="badge_djangozoom.html" />
+    <link rel="prev" title="Graphing with Matplotlib" href="badge_matplotlib.html" />
+     
+    <link rel="stylesheet" href="../_static/pystar.css" type="text/css" /> 
+    <link rel="stylesheet" href="../_static/css/twitter-mentions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/tablesorter_blue_skin/style.css" type="text/css" /> 
+
+
+  </head>
+  <body>
+    
+    <div class="header-wrapper">
+      <div class="header">
+          <p class="logo"><a href="../index.html">
+            <img class="logo" src="../_static/pystar_flaming_160_150px.png" alt="Logo"/>
+          </a></p>
+        <h1><a href="../index.html">PyStar: Programming Workshops for Women and Their Friends</a></h1>
+        <div class="rel">
+          <a href="badge_matplotlib.html" title="Graphing with Matplotlib"
+             accesskey="P">previous</a> |
+          <a href="badge_djangozoom.html" title="DjangoZoom Deployment"
+             accesskey="N">next</a>
+        </div>
+       </div>
+    </div>
+
+    <div style="position: absolute; top:0px; right:0px">
+    <a href="https://github.com/pystar/pystar"><img src="../_static/img/forkme_right_darkblue_121621.png" /></a>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="django-polls-webapp">
+<span id="badge-webapp"></span><h1>Django Polls Webapp<a class="headerlink" href="#django-polls-webapp" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will look at writing and deploying a web application.
+The app is an online poll where visitors can view choices
+(a bit of text) and vote the option up and down.</p>
+<p>We will cover local deployment as well as deploying your web application to the world,
+where other people can play with it, and where you can modify it.</p>
+<p>This is based <em>heavily</em> on the official tutorial for the Django web programming framework
+as well as the <a class="reference external" href="http://www.wiki.devchix.com/index.php?title=Ruby_and_Rails_workshops_for_women">Ruby on Rails for Women</a>
+workshop.</p>
+<p>If you would like to see an example of this completed tutorial,
+<a class="reference external" href="https://github.com/gregglind/pystar-webapp/commits/master">Gregg did it</a>,
+<a class="reference external" href="https://github.com/lsblakk/myproject">Lukas did it</a></p>
+<div class="section" id="part-1-if-you-build-it-they-will-pay-you">
+<h2>Part 1: If You Build It... They Will Pay You<a class="headerlink" href="#part-1-if-you-build-it-they-will-pay-you" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-client">
+<h3>The Client<a class="headerlink" href="#the-client" title="Permalink to this headline">¶</a></h3>
+<p>VoteOnEverything, Ltd. (VOEL) is a web startup hoping to make some money on this
+&#8220;internet&#8221; thing the kids are talking about.  Their idea: <strong>an app where people
+can easily create polls on their favorite subjects and vote on them!</strong>
+They are flush with cash, and have hired you (you&#8217;re smart, right?) to help out!</p>
+</div>
+<div class="section" id="example-user-stories">
+<h3>Example User Stories<a class="headerlink" href="#example-user-stories" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>As a <em>poll creator</em>, it should be obvious and easy to create polls.</li>
+<li>As a <em>visitor</em>, I want stable urls so I can share my polls easily.</li>
+<li>As a <em>voter</em>, it should be easy to vote on polls!</li>
+<li>As <em>VOEL</em>, I want polls with lots of total votes to be on the front page.</li>
+<li>As <em>VOEL</em>, I want to keep track of visitor information, to sell to advertisers,
+including their source ip, geography, etc.</li>
+<li>As a <em>user</em>, I want the application to keep track of polls I have created,
+my voting history.</li>
+<li>(many many more)</li>
+</ol>
+</div>
+<div class="section" id="designing-the-prototype">
+<h3>Designing The Prototype<a class="headerlink" href="#designing-the-prototype" title="Permalink to this headline">¶</a></h3>
+<p>Time to make a prototype!
+After hearing about Python and the Django web framework from that
+smart woman you know who works at Google, you have decided to try it out!</p>
+<p>Since this is a prototype, you have decided to eliminate some features
+(logins, history tracking, demographic information, etc.) to focus on the
+core applicaion:  polls and voting.</p>
+<p>The prototype will consist of two parts:</p>
+<ol class="arabic simple">
+<li>A public site that lets people view polls and vote in them.</li>
+<li>An admin site that lets you add, change and delete polls.</li>
+</ol>
+<p>You have decided to implement the following pages:</p>
+<ol class="arabic simple">
+<li>Poll “index” page – displays the latest few polls.</li>
+<li>Poll “detail” page – displays a poll question, with no results but with a form to vote.</li>
+<li>Poll “results” page – displays results for a particular poll.</li>
+<li>Vote action – handles voting for a particular choice in a particular poll.</li>
+</ol>
+<p>To support these pages, you need these abstractions (models, objects):</p>
+<ol class="arabic simple">
+<li>Polls</li>
+<li>Choices</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-2-create-your-django-app">
+<h2>Part 2: Create your Django App<a class="headerlink" href="#part-2-create-your-django-app" title="Permalink to this headline">¶</a></h2>
+<p>Goal:  Configure and explore a basic Django &#8220;out of the box app&#8221;.</p>
+<div class="section" id="create-necessary-directories-activate-virtualenv">
+<h3>Create necessary directories, activate virtualenv<a class="headerlink" href="#create-necessary-directories-activate-virtualenv" title="Permalink to this headline">¶</a></h3>
+<p>(You may have already done this!)</p>
+<p>In your terminal, starting from somewhere reasonable (here, <tt class="docutils literal"><span class="pre">mydir</span></tt>)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># remember in bash, # means comment -- don&#39;t type these :)</span>
+<span class="nb">cd </span>mydir
+mkdir django_projects
+virtualenv --no-site-packages pystar
+<span class="c"># New python executable in pystar/bin/python</span>
+<span class="c"># Installing setuptools............done.</span>
+<span class="nb">source </span>pystar/bin/activate  <span class="c"># windows -&gt; pystar\Scripts\activate.bat</span>
+<span class="c"># (pystar)My-MacBook-Pro:mydir $</span>
+<span class="c"># $ ls .</span>
+<span class="c"># django_projects pystar</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch-to-the-right-directory">
+<h3>Switch to the right directory<a class="headerlink" href="#switch-to-the-right-directory" title="Permalink to this headline">¶</a></h3>
+<p>In a terminal (or GitBash), get into the <tt class="docutils literal"><span class="pre">django_projects</span></tt> directory
+we created in the Friday setup portion of the tutorial.</p>
+<p>You can do that by typing this into your terminal:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>django_projects
+</pre></div>
+</div>
+<p>In the Friday setup portion of the workshop, you already saw how
+to use the <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> command to start a project. However, today, we&#8217;re using a super basic Django project that has some of the less crucial settings already predefined. Download the files at <a class="reference external" href="http://pystar.org/_downloads/myproject.tar.gz">http://pystar.org/_downloads/myproject.tar.gz</a> and add the <tt class="docutils literal"><span class="pre">myproject</span></tt> folder to your <tt class="docutils literal"><span class="pre">django_projects</span></tt> directory.</p>
+<p>Let&#8217;s go into <tt class="docutils literal"><span class="pre">myproject</span></tt> and start looking around.</p>
+</div>
+<div class="section" id="look-at-the-files">
+<h3>Look at the files<a class="headerlink" href="#look-at-the-files" title="Permalink to this headline">¶</a></h3>
+<p>Let’s look at files in the project (you can ignore any .pyc files). The default Django app should
+look like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># remember, &#39;$ &#39; indicates the terminal prompt, don&#39;t type it!</span>
+<span class="nv">$ </span>ls
+    __init__.py
+    manage.py
+    settings.py
+    urls.py
+</pre></div>
+</div>
+<p>These files are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">__init__.py</span></tt>: An empty file that tells Python that this directory should be considered a Python module. Because of the <tt class="docutils literal"><span class="pre">__init__.py</span></tt> file, you can use <tt class="docutils literal"><span class="pre">import</span></tt> to <tt class="docutils literal"><span class="pre">import</span> <span class="pre">myproject</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">manage.py</span></tt>: A command-line utility that lets you interact with this Django project in various ways. You can read all the details about <tt class="docutils literal"><span class="pre">manage.py</span></tt> in <tt class="docutils literal"><span class="pre">django-admin.py</span></tt> and <tt class="docutils literal"><span class="pre">manage.py</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">settings.py</span></tt>: Settings/configuration for this Django project. Django settings will tell you all about how settings work.</li>
+<li><tt class="docutils literal"><span class="pre">urls.py</span></tt>: The URL declarations for this Django project; a &#8220;table of contents&#8221; of your Django-powered site. You can read more about URLs in URL dispatcher.</li>
+</ul>
+</div>
+<div class="section" id="start-the-development-local-server">
+<h3>Start the Development (Local) Server<a class="headerlink" href="#start-the-development-local-server" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Verify the development server will start.</p>
+<blockquote>
+<div><ol class="loweralpha">
+<li><p class="first">Run the command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py runserver
+</pre></div>
+</div>
+</li>
+<li><p class="first">Review the output in your terminal.  It should look similar to:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre>Validating models...
+0 errors found.
+
+Django version 1.2, using settings <span class="s1">&#39;myproject.settings&#39;</span>
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first">Now that the server&#8217;s running, visit <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> with your Web browser.
+You&#8217;ll see a &#8220;Welcome to Django&#8221; page, in pleasant, light-blue pastel. It worked!</p>
+<img alt="../_images/itworks4.png" src="../_images/itworks4.png" />
+<p>Note how mouthy this is, and that it mentions <tt class="docutils literal"><span class="pre">DEBUG</span></tt>, <tt class="docutils literal"><span class="pre">settings.py</span></tt>, and
+a lot more, which will be covered in later sections.</p>
+<div class="highlight-python"><pre>Of course, you haven't actually done any work yet. Here's what to do next:
+If you plan to use a database, edit the DATABASES setting in myproject/settings.py.
+Start your first app by running python myproject/manage.py startapp [appname].
+You're seeing this message because you have DEBUG = True in your Django settings
+file and you haven't configured any URLs. Get to work!</pre>
+</div>
+</li>
+<li><p class="first">Observe the logging that happens in the terminal where your server is running:</p>
+<div class="highlight-none"><div class="highlight"><pre>[24/Mar/2011 11:50:18] &quot;GET / HTTP/1.1&quot; 200 2057
+</pre></div>
+</div>
+<p>which has the format:</p>
+<div class="highlight-none"><div class="highlight"><pre>DATE  METHOD URL  PROTOCOL  RESPONSE_CODE  CONTENTSIZE
+</pre></div>
+</div>
+</li>
+<li><p class="first">Navigate to <a class="reference external" href="http://127.0.0.1:8000/some/url/">http://127.0.0.1:8000/some/url/</a>.  What changes in the terminal log?</p>
+</li>
+<li><p class="first">Exit the server</p>
+<ol class="arabic simple">
+<li>return to the terminal instance where the development server is running</li>
+<li>pressing CONTROL-C on your keyboard</li>
+<li>VERIFY your server is shut down.  How do you do this?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-verify-shutdown"><em>answer</em></a>]</li>
+</ol>
+</li>
+<li><p class="first"><strong>Experiment</strong>:  These two commands are identical:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py runserver
+python manage.py runserver 8000
+</pre></div>
+</div>
+<p>The &#8216;8000&#8217; number is the port on which the server runs, by default. <em>Start</em> a server on port 8103, and <em>navigate</em> to it using your browser
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-8103"><em>answer</em></a>].</p>
+</li>
+<li><p class="first">Type <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">help</span></tt>.  Speculate what some of these commands
+might do.  For reference:  <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/django-admin/">http://docs.djangoproject.com/en/dev/ref/django-admin/</a></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-3-save-your-work">
+<h2>Part 3: Save your work!<a class="headerlink" href="#part-3-save-your-work" title="Permalink to this headline">¶</a></h2>
+<p>Before we do anything else, let&#8217;s save our work and start it with the world.</p>
+<p>We&#8217;ll do that with <tt class="docutils literal"><span class="pre">git</span></tt> and <tt class="docutils literal"><span class="pre">Github</span></tt>. On your own computer, get to a Terminal or a GitBash.</p>
+<ol class="arabic">
+<li><p class="first">You should have set up <tt class="docutils literal"><span class="pre">git</span></tt> and your GitHub account yesterday. If not,
+do it now.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">cd</span></tt> to get into the <tt class="docutils literal"><span class="pre">myproject</span></tt> directory. If it&#8217;s a fresh Terminal, this is what you&#8217;ll do:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ~/django_projects/myproject
+</pre></div>
+</div>
+</li>
+<li><p class="first">Is this new project?  (It is!)  So:</p>
+<ol class="arabic">
+<li><p class="first">create a git repository in the project directory:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span class="c"># in myproject</span>
+git init
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Create your project on GitHub.  Go to <a class="reference external" href="http://github.com/">http://github.com/</a> and create a new repository called &#8220;myproject&#8221;. On the main dashboard page, click on &#8220;New Repository&#8221; fill out the necessary information. cf:  <a class="reference external" href="http://help.github.com/create-a-repo/">http://help.github.com/create-a-repo/</a>.</p>
+</li>
+</ol>
+</li>
+<li><p class="first">Check the <strong>status</strong> of your files.  At this point:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>pystar2<span class="o">)</span>Gregg-Linds-MacBook-Pro:myproject gregg<span class="nv">$ </span>git status
+<span class="c"># On branch master</span>
+<span class="c">#</span>
+<span class="c"># Initial commit</span>
+<span class="c">#</span>
+<span class="c"># Untracked files:</span>
+<span class="c">#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span>
+<span class="c">#</span>
+<span class="c">#   __init__.py</span>
+<span class="c">#   manage.py</span>
+<span class="c">#   settings.py</span>
+<span class="c">#   urls.py</span>
+nothing added to commit but untracked files present <span class="o">(</span>use <span class="s2">&quot;git add&quot;</span> to track<span class="o">)</span>
+</pre></div>
+</div>
+<p>None of the files are <strong>tracked</strong>.  That is, <tt class="docutils literal"><span class="pre">git</span></tt> doesn&#8217;t know about them!</p>
+</li>
+<li><p class="first">Add one file <tt class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">manage.py</span></tt>.  <strong>POP QUIZ</strong>:  What does <tt class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></tt> say now?</p>
+</li>
+<li><p class="first">Add all your files to the repo, in the local directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git add *.py   <span class="c"># all .py files, using a wildcard match.</span>
+</pre></div>
+</div>
+<p>Now git is aware of your files.  Use <tt class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></tt> to see them there in
+the <em>staging</em> area (the index).</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span></tt> to <tt class="docutils literal"><span class="pre">commit</span></tt> those files:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># -m -&gt; what is the &#39;message&#39; for the commit</span>
+git commit -m <span class="s2">&quot;Initial commit of django project from the PyStar workshop&quot;</span>
+</pre></div>
+</div>
+<p>Look at your changes with  <tt class="docutils literal"><span class="pre">git</span> <span class="pre">log</span></tt> to see your history.  Is your commit message there?</p>
+</li>
+<li><p class="first">Connect the remote github repo to your local one, and use <tt class="docutils literal"><span class="pre">git</span> <span class="pre">push</span></tt> to push those up to your Github repository (putting your user name and project title in the appropriate slots):</p>
+<div class="highlight-bash"><div class="highlight"><pre>git remote add origin git@github.com:myusername/myproject.git
+git push origin master
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to your Github account in your browser. Find the <tt class="docutils literal"><span class="pre">myproject</span></tt> repository. Do you see your files?</p>
+</li>
+<li><p class="first">Remember:</p>
+<ul class="simple">
+<li>&#8220;commit your work&#8221; means &#8220;add and commit it to the local repository on your computer&#8221;</li>
+<li>&#8220;push your work&#8221; means &#8220;git push it to github&#8221; (if your computer explodes, there will still be a copy of your code on github!)</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="part-4-configure-your-django-project">
+<h2>Part 4:  Configure your Django Project<a class="headerlink" href="#part-4-configure-your-django-project" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have a the scaffolding for our <strong>project</strong> in place, we can get to
+work!  It needs to be <strong>configured</strong>.</p>
+<div class="section" id="add-yourself-as-an-admin">
+<h3>Add yourself as an admin!<a class="headerlink" href="#add-yourself-as-an-admin" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Open  <tt class="docutils literal"><span class="pre">settings.py</span></tt> in your editor.  <tt class="docutils literal"><span class="pre">settings.py</span></tt> is a Python script that only contains variable definitions.  Django looks at the values of these variables when it runs your web app. The scaffold we wrote for you and Django&#8217;s own &#8216;startproject&#8217; command has specified some of these variables by default, though not all of them.</p>
+</li>
+<li><p class="first">Find <tt class="docutils literal"><span class="pre">ADMINS</span></tt> and replace <tt class="docutils literal"><span class="pre">Your</span> <span class="pre">Name</span></tt> and <tt class="docutils literal"><span class="pre">your_email&#64;example.com</span></tt> with your name and your email address.</p>
+</li>
+<li><p class="first">Remove the pound mark from the front of the line to uncomment it out.</p>
+</li>
+<li><p class="first">git add and commit it:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre>git add settings.py
+git commit -m <span class="s2">&quot;made myself an admin&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="fix-security-settings">
+<h3>Fix security settings<a class="headerlink" href="#fix-security-settings" title="Permalink to this headline">¶</a></h3>
+<p>Right now, everyone in the workshop has the same &#8220;SECRET_KEY&#8221;. Since Django
+uses this key for various sensitive things, you should change it.</p>
+<ol class="arabic">
+<li><p class="first">In <tt class="docutils literal"><span class="pre">settings.py,</span></tt> find the variable named <tt class="docutils literal"><span class="pre">SECRET_KEY</span></tt> and set it to whatever string
+you want.</p>
+</li>
+<li><p class="first">Verify it looks something like:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="c"># change this to something arbitrary.</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">&#39;6yl8d1u0+ogcz!0@3_%au)_&amp;ty$%1jcs2hy-!&amp;v&amp;vv2#@pq^(h&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">How would we put a single-quote (&#8216;) in our SECRET_KEY?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-single-quote"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">save the file</p>
+</li>
+<li><p class="first">git add and commit it:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre>git add settings.py
+git commit -m <span class="s2">&quot;changed SECRET_KEY&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="set-up-the-database">
+<h3>Set up the Database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Keep looking at <tt class="docutils literal"><span class="pre">settings.py</span></tt>: The <tt class="docutils literal"><span class="pre">DATABASES</span></tt> variable is a dictionary
+(note the &#8216;{}&#8217; characters) with one key: <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span> <span class="c"># Add &#39;postgresql_psycopg2&#39;, &#39;postgresql&#39;, &#39;mysql&#39;, &#39;sqlite3&#39; or &#39;oracle&#39;.</span>
+        <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;database.db&#39;</span><span class="p">,</span>                      <span class="c"># Or path to database file if using sqlite3.</span>
+        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Not used with sqlite3.</span>
+        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                  <span class="c"># Not used with sqlite3.</span>
+        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Set to empty string for 127.0.0.1. Not used with sqlite3.</span>
+        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Set to empty string for default. Not used with sqlite3.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Notice that the value of <tt class="docutils literal"><span class="pre">default</span></tt> is itself another dictionary with information about the site&#8217;s default  database. We&#8217;ve set our app to use a <tt class="docutils literal"><span class="pre">sqlite</span></tt> database, in the <tt class="docutils literal"><span class="pre">ENGINE</span></tt> attribute.
+Sqlite is great for development because is stores its data in one normal file on
+your system and therefore is really simple to move around with your app.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In production, Sqlite has issues because only one process can <em>write</em> to it
+as a time.  <strong>Discuss</strong> the implications of this with your group.  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-sqlite-one-writer-implications"><em>answer</em></a>]</p>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">NAME</span></tt> key tells the Django project to use a file called <tt class="docutils literal"><span class="pre">database.db</span></tt> to store information for this project.</p>
+</li>
+<li><p class="first"><strong>Pop quiz</strong>: Does <tt class="docutils literal"><span class="pre">database.db</span></tt> exist right now?  Find out!  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-database-db-exists"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Notice the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting towards the
+bottom of the <tt class="docutils literal"><span class="pre">settings.py</span></tt>. That variable (a tuple... note the &#8216;()&#8217; symbols)
+holds the names of all Django applications that are activated in this Django instance.
+<strong>Apps</strong> can be used in multiple projects, and you can
+package and distribute them for use by others in their projects.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sites&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="c"># &#39;django.contrib.admin&#39;,</span>
+    <span class="c"># Uncomment the next line to enable admin documentation:</span>
+    <span class="c"># &#39;django.contrib.admindocs&#39;,</span>
+      <span class="s">&#39;south&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>What do you think these various <strong>apps</strong> do?  Why does it make sense
+for them to come in a standard configuration?
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-standard-apps"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Each of these applications makes use of at least one database table, so we need to create
+the tables in the database before we can use them. To do that, run the following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py syncdb
+</pre></div>
+</div>
+<p>The syncdb command looks at the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting and creates any necessary
+database tables according to the database settings in your <tt class="docutils literal"><span class="pre">settings.py</span></tt> file. You&#8217;ll see a
+message for each database table it creates.</p>
+</li>
+<li><p class="first">When prompted, you&#8217;ll get a prompt asking you if you&#8217;d like to create a superuser account for the authentication system. Say yes!  Use &#8216;super&#8217; as your password:</p>
+<div class="highlight-python"><pre>You just installed Django's auth system, which means you don't have any superusers defined.
+Would you like to create one now? (yes/no): yes
+Username (Leave blank to use 'barack'): super
+E-mail address: example@example.com
+Password:
+Password (again):
+Superuser created successfully.
+Installing index for auth.Permission model
+Installing index for auth.Group_permissions model
+Installing index for auth.User_user_permissions model
+Installing index for auth.User_groups model
+Installing index for auth.Message model
+No fixtures found.</pre>
+</div>
+</li>
+<li><p class="first">Does this seem magical?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-magical"><em>answer</em></a>]</p>
+</li>
+<li><p class="first"><strong>Pop quiz</strong>: Does <tt class="docutils literal"><span class="pre">database.db</span></tt> exist right now?  Find out!  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-database-db-exists-after-sync"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Save <em>and commit</em> your work</p>
+<div class="highlight-python"><pre>git status
+# will show settings.py is changed, and a new 'untracked'
+# MacBook-Pro:myproject gregg$ git status
+# On branch master
+# Changed but not updated:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   modified:   settings.py
+#
+#</pre>
+</div>
+</li>
+<li><p class="first">Drink some tea and take a stretch break.  Then we can come back to
+STRETCHING OUR MINDS.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-5-in-which-you-save-you-from-yourself-using-git">
+<h2>Part 5: In Which You Save You From Yourself, Using Git.<a class="headerlink" href="#part-5-in-which-you-save-you-from-yourself-using-git" title="Permalink to this headline">¶</a></h2>
+<p>Your work is saved and committed (in git!) right?</p>
+<p><strong>Right?</strong>  How do you know?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-know-what-saved"><em>answer</em></a>]</p>
+<p>Good. Because you got a case of the accidental deletes and you&#8217;ve deleted your <tt class="docutils literal"><span class="pre">settings.py</span></tt> file!</p>
+<ol class="arabic">
+<li><p class="first">No really. Go and delete <tt class="docutils literal"><span class="pre">settings.py</span></tt>. Throw it in the trash. Or the recycling bin. Or <tt class="docutils literal"><span class="pre">rm</span></tt> from the command line.  Make sure it&#8217;s <em>really gone</em> using <tt class="docutils literal"><span class="pre">ls</span></tt>.</p>
+</li>
+<li><p class="first">Try running your dev server. What happens? Why?</p>
+</li>
+<li><p class="first">Delete your <tt class="docutils literal"><span class="pre">settings.pyc</span></tt> file. Try running your dev server. What happens now? Why?
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-dev-server-still-works"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Cry!  So they&#8217;re gone right? No way back. And everything&#8217;s broken!</p>
+</li>
+<li><p class="first">Rejoice! Because we&#8217;re using version control and version control is about to save your bacon!</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git checkout settings.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Look at your project folder again, using <tt class="docutils literal"><span class="pre">ls</span></tt>. Lo and behold, <tt class="docutils literal"><span class="pre">settings.py</span></tt>! Back from beyond the grave! Cool, huh? Open it up, and verify it is exactly as you left it.  Isn&#8217;t that magical?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-git-magical"><em>answer</em></a>].</p>
+<p>But what of <tt class="docutils literal"><span class="pre">settings.pyc</span></tt>? Start your dev server. It works, right? Stop your dev server and look at the files in your project. Do you see <tt class="docutils literal"><span class="pre">settings.pyc</span></tt>? How did it get there?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-why-only-restore-py-not-pyc"><em>answer</em></a>]</p>
+</li>
+</ol>
+</div>
+<div class="section" id="part-6-build-the-polls-application">
+<h2>Part 6: Build The Polls Application<a class="headerlink" href="#part-6-build-the-polls-application" title="Permalink to this headline">¶</a></h2>
+<p>Now that your environment &#8211; a &#8220;project&#8221; &#8211; is set up, you&#8217;re set to start building the poll application.</p>
+<p>Each application you write in Django consists of a Python package,
+somewhere on your Python path, that follows a certain convention.
+Django comes with a utility that automatically generates the basic directory
+structure of an app (that Django expects), so you can focus on writing code!.</p>
+<div class="section" id="projects-and-apps">
+<h3>Projects and Apps<a class="headerlink" href="#projects-and-apps" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve talked a little about Django <strong>apps</strong> and <strong>projects</strong>. You might be
+wondering what the difference is.</p>
+<p>Here are the things to know:</p>
+<ul>
+<li><p class="first">An <strong>app</strong> is component of a website that does something. For example, the <strong>Django administration</strong> app is something you&#8217;ll see later in this tutorial.  So is our <tt class="docutils literal"><span class="pre">polls</span></tt> app.  An app is:</p>
+<blockquote>
+<div><ul class="simple">
+<li>single purpose - login, passwords, polls, forum, etc.</li>
+<li>orthonogal to / independent of other apps - polls shouldn&#8217;t have to
+know the inside details of authentication, for example.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">A <strong>project</strong> corresponds to a &#8216;website&#8217;: it contains a <tt class="docutils literal"><span class="pre">settings.py</span></tt> file, and
+it may have corresponding databases or other data stores
+that the apps interact with.</p>
+</li>
+</ul>
+<p>Django apps can live anywhere on the <strong>Python path</strong>.  The <strong>python path</strong> is
+a list of paths where the python interpreter looks for modules.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
+&gt;&gt;&gt; import sys
+&gt;&gt;&gt; sys.path
+<span class="o">[</span><span class="s1">&#39;&#39;</span>, <span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python2.6/site-packages/setuptools-0.6c11-py2.6.egg&#39;</span>,
+<span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python2.6/site-packages/pip-0.8.3-py2.6.egg&#39;</span>,
+<span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python26.zip&#39;</span>,
+<span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python2.6&#39;</span>,
+<span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python2.6/plat-darwin&#39;</span>,
+<span class="s1">&#39;/Users/gregg/mydir/pystar/lib/python2.6/plat-mac&#39;</span> ... <span class="o">]</span>
+</pre></div>
+</div>
+<p>To be importable (seeable by Python), your Django app must be in one of the folders
+on <em>your</em> path.</p>
+<p><strong>Experiment</strong>:  look at your Python Path!</p>
+</div>
+<div class="section" id="create-the-poll-app">
+<h3>Create The Poll App<a class="headerlink" href="#create-the-poll-app" title="Permalink to this headline">¶</a></h3>
+<p>In this tutorial, we&#8217;ll create our poll app in the myproject directory for
+simplicity. In the future, when you decide that the world needs to be able to
+use your poll app and plug it into their own projects, and after you determine
+that your app plays nicely with other apps, you can publish that directory separately!</p>
+<ol class="arabic">
+<li><p class="first">open your terminal and navigate to <tt class="docutils literal"><span class="pre">myproject</span></tt></p>
+</li>
+<li><p class="first">make scaffolding for the app</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py startapp polls
+</pre></div>
+</div>
+<p>That&#8217;ll create a directory <tt class="docutils literal"><span class="pre">polls</span></tt> to house the poll application.</p>
+</li>
+<li><p class="first">Verify what is new.</p>
+<div class="highlight-bash"><div class="highlight"><pre>git status
+<span class="c"># should show &#39;polls/&#39; in &#39;untracked&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">While were are here lets make <tt class="docutils literal"><span class="pre">git</span></tt> ignore &#8216;database.db&#8217; by adding
+<tt class="docutils literal"><span class="pre">database.db</span></tt> to <tt class="docutils literal"><span class="pre">.git/info/exclude</span></tt>.  Verify (using &#8216;git status&#8217;) that is it gone.</p>
+</li>
+<li><p class="first">Examine the layout of <tt class="docutils literal"><span class="pre">polls</span></tt> (we will do more of this in following sections).</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># remember not to type the &#39;$&#39;, it just means the prompt&#39;.</span>
+<span class="nv">$ </span>ls polls
+polls/
+   __init__.py
+   models.py
+   tests.py
+   views.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prove that <tt class="docutils literal"><span class="pre">polls</span></tt> is importable [<a class="reference internal" href="../webapp_answers.html#webapp-answers-is-polls-importable"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Add and commit <tt class="docutils literal"><span class="pre">polls/*py</span></tt>.</p>
+</li>
+<li><p class="first">Install the polls app into the project.
+Edit the <tt class="docutils literal"><span class="pre">settings.py</span></tt> file again, and change the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting to
+include the string &#8216;polls&#8217; as the last entry.  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-added-polls"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Save and commit the  <tt class="docutils literal"><span class="pre">settings.py</span></tt> file.</p>
+</li>
+<li><p class="first">Refill your tea!</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-7-test-your-django-project">
+<h2>Part 7: Test your Django Project<a class="headerlink" href="#part-7-test-your-django-project" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Run the default Django tests</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py <span class="nb">test</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Examine the output.  If there are errors, what are they?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-project-testing-results"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">Run the tests for the <tt class="docutils literal"><span class="pre">polls</span></tt> application</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py <span class="nb">test </span>polls
+</pre></div>
+</div>
+<p>You should get output like:</p>
+<div class="highlight-none"><div class="highlight"><pre>$ python manage.py test polls
+Creating test database for alias &#39;default&#39;...
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+Destroying test database for alias &#39;default&#39;...
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make it louder!  Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">polls</span> <span class="pre">-v</span> <span class="pre">2</span></tt> and see that it
+now <em>names</em> the test &#8211;&gt; <tt class="docutils literal"><span class="pre">test_basic_addition</span> <span class="pre">(polls.tests.SimpleTest)</span></tt>.
+&#8216;-v&#8217; is for <em>verbosity</em>, and (here) can be 0,1,2,3.</p>
+</li>
+<li><p class="first">View <tt class="docutils literal"><span class="pre">polls/test.py</span></tt>, and see the example test.</p>
+</li>
+<li><p class="first">Copy <a class="reference external" href="https://github.com/pystar/pystar/raw/master/docs/test_polls.py">test_polls.py</a> and move it into <tt class="docutils literal"><span class="pre">polls</span></tt> directory</p>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">polls</span></tt> to include the tests from <tt class="docutils literal"><span class="pre">test_polls.py</span></tt> to look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">test_polls</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add it into your project code git repo:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git add polls/tests.py polls/test_polls.py
+git commit -m <span class="s2">&quot;added tests&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Examine <tt class="docutils literal"><span class="pre">test_polls.py</span></tt> in your editor.  This file (provided by us)
+gives acceptance tests for many of the points on the original spec sheet.  Normally
+this is the sort of thing you would write yourself, after reading your
+spec, and deciding on acceptence criteria.  We done it here to help you
+along, and provide an example for your work in the future!</p>
+<p>Writing good tests <em>is hard</em>!</p>
+</li>
+<li><p class="first">Re-run your tests.  <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">polls</span></tt>. Note that most fail!
+(We will assume that the django tests all pass and focus on testing the
+<tt class="docutils literal"><span class="pre">polls</span></tt> tests, from here on out.)</p>
+</li>
+<li><p class="first">Discuss with your groups why testing matters.  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-why-testing-matters"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">We will return to testing throughout this document as we add new features.
+We are done when all the tests pass!</p>
+</li>
+<li><p class="first">Further research:  <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/testing/">http://docs.djangoproject.com/en/dev/topics/testing/</a>, which
+goes into this in much greater detail.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">test</span> <span class="pre">yourface</span></tt>:  Take your eyes off the screen, and make some funny faces.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="part-8-refine-your-workflow">
+<h2>Part 8: Refine Your Workflow!<a class="headerlink" href="#part-8-refine-your-workflow" title="Permalink to this headline">¶</a></h2>
+<p>When developing, this is a good work flow.</p>
+<ol class="arabic simple">
+<li>Design a feature, with criteria for acceptance.</li>
+<li>Test your feature, to see if meets those criteria.</li>
+<li>When it works (or you make good progress), <em>commit your work</em>.</li>
+</ol>
+<p>We will use this workflow throughout the following sections, as we add
+the features that our protype spec outlined.</p>
+</div>
+<div class="section" id="part-9-philosophy-break">
+<h2>Part 9: Philosophy Break!<a class="headerlink" href="#part-9-philosophy-break" title="Permalink to this headline">¶</a></h2>
+<p>In the following sections, there will be <strong>Django Philosophy</strong> breaks to
+highlight major ideas of the Django framework.  Other web
+frameworks might make these choices or use these terms differently.  Who is right?
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-the-right-framework"><em>answer</em></a>]</p>
+</div>
+<div class="section" id="part-10-mockups-views-and-urls">
+<h2>Part 10: Mockups, Views, and URLs<a class="headerlink" href="#part-10-mockups-views-and-urls" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-django-philosophy admonition ">
+<p class="first admonition-title">Django-Philosophy</p>
+<p class="last">A view is a “type” of Web page in your Django application that
+generally serves a specific
+task and has a specific associated template.</p>
+</div>
+<p>In a Blog application, you might have the following views:</p>
+<ul class="simple">
+<li>Blog homepage – displays the latest few entries.</li>
+<li>Entry “detail” page – permalink page for a single entry.</li>
+<li>Year-based archive page – displays all months with entries in the given year.</li>
+<li>Month-based archive page – displays all days with entries in the given month.</li>
+<li>Day-based archive page – displays all entries in the given day.</li>
+<li>Comment action – handles posting comments to a given entry.</li>
+</ul>
+<p>In our poll application, we’ll have the following four views:</p>
+<ul class="simple">
+<li>Poll “index” page – displays the latest few polls.</li>
+<li>Poll “detail” page – displays a poll question, with no results but with a form to vote.</li>
+<li>Poll “results” page – displays results for a particular poll.</li>
+<li>Vote action – handles voting for a particular choice in a particular poll.</li>
+</ul>
+<p>In Django, each view is represented by a Python function.</p>
+<div class="section" id="design-your-urls">
+<h3>Design your URLs<a class="headerlink" href="#design-your-urls" title="Permalink to this headline">¶</a></h3>
+<p>The first step of writing views is to design your URL structure. You do this by creating a
+Python module, called a <tt class="docutils literal"><span class="pre">URLconf</span></tt>. <tt class="docutils literal"><span class="pre">URLconfs</span></tt> are how Django associates a given URL with
+given Python code.</p>
+<p>When a user requests a Django-powered page, the system looks at the <tt class="docutils literal"><span class="pre">ROOT_URLCONF</span></tt>
+setting, which contains a string in Python dotted syntax.</p>
+<p><strong>Pop quiz</strong>: what is the <tt class="docutils literal"><span class="pre">ROOT_URLCONF</span></tt> for your project?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-root-urlconf"><em>answer</em></a>]</p>
+<p>Django loads that module and looks for a module-level variable called <tt class="docutils literal"><span class="pre">urlpatterns</span></tt>, which is a sequence of tuples in the
+following format:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">(</span>regular expression, Python callback <span class="k">function</span> <span class="o">[</span>, optional dictionary<span class="o">])</span>
+</pre></div>
+</div>
+<p>Django starts at the first regular expression and makes its way down the list, comparing
+the requested URL against each regular expression until it finds one that matches.</p>
+<p>You might ask, &#8220;What&#8217;s a regular expression?&#8221; Regular expressions are patterns for matching
+text. In this case, we&#8217;re matching the URLs people go to, and using regular expressions to
+match whole &#8216;groups&#8217; of them at once.</p>
+<p>(If you&#8217;d like to learn more about regular expressions read the
+<a class="reference external" href="http://diveintopython.org/regular_expressions/index.html">Dive into Python guide to regular expressions</a> sometime.
+Or you can look at this <a class="reference external" href="http://xkcd.com/208/">xkcd</a>.)</p>
+<p>In addition to <strong>matching</strong> text, regular expressions can <strong>capture</strong> text.
+<strong>Capturing</strong> means to <cite>remember</cite> that part of the string, for later use.
+Regexps (or Regexen) use parentheses <tt class="docutils literal"><span class="pre">()</span></tt> to wrap the parts they&#8217;re capturing.</p>
+<p>For Django, when a regular expression matches the URL that a web surfer requests,
+Django extracts the captured values and passes them to a function of your choosing.
+This is the role of the <tt class="docutils literal"><span class="pre">callback</span> <span class="pre">function</span></tt> above.  When a regular expression
+matches the url, Django calls the associated <tt class="docutils literal"><span class="pre">callback</span> <span class="pre">function</span></tt> with any
+<strong>captured</strong> parts as parameters.  This will much clearer after the next section.</p>
+</div>
+<div class="section" id="add-urls-to-urls-py">
+<h3>Add URLs to urls.py<a class="headerlink" href="#add-urls-to-urls-py" title="Permalink to this headline">¶</a></h3>
+<p>When we ran <tt class="docutils literal"><span class="pre">django-admin.py</span> <span class="pre">startproject</span> <span class="pre">myproject</span></tt> to create the project,
+Django created a default URLconf file called <tt class="docutils literal"><span class="pre">`urls.py`</span></tt>.</p>
+<ol class="arabic">
+<li><p class="first">Write our URL mapping. Edit the file <tt class="docutils literal"><span class="pre">myproject/urls.py</span></tt> so it looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">r&#39;^polls/$&#39;</span><span class="p">,</span> <span class="s">&#39;polls.views.index&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">r&#39;^polls/(\d+)/$&#39;</span><span class="p">,</span> <span class="s">&#39;polls.views.detail&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">r&#39;^polls/(\d+)/results/$&#39;</span><span class="p">,</span> <span class="s">&#39;polls.views.results&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">r&#39;^polls/(\d+)/vote/$&#39;</span><span class="p">,</span> <span class="s">&#39;polls.views.vote&#39;</span><span class="p">),</span>
+    <span class="c"># Examples:</span>
+    <span class="c"># url(r&#39;^$&#39;, &#39;myproject.views.home&#39;, name=&#39;home&#39;),</span>
+    <span class="c"># url(r&#39;^myproject/&#39;, include(&#39;myproject.foo.urls&#39;)),</span>
+
+    <span class="c"># Uncomment the admin/doc line below to enable admin documentation:</span>
+    <span class="c"># url(r&#39;^admin/doc/&#39;, include(&#39;django.contrib.admindocs.urls&#39;)),</span>
+
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="c"># url(r&#39;^admin/&#39;, include(admin.site.urls)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>POP QUIZ</strong>, suppose a visitor goes to <a class="reference external" href="http://127.0.0.1:8000/polls/23/results/">http://127.0.0.1:8000/polls/23/results/</a> ,</p>
+<ol class="arabic simple">
+<li>which regex pattern is tripped?</li>
+<li>what function is then called?</li>
+<li>what arguments is that function called with?</li>
+<li>[<a class="reference internal" href="../webapp_answers.html#webapp-answers-urlconf-polls-vote"><em>answer</em></a>]</li>
+</ol>
+</li>
+<li><p class="first">Save <tt class="docutils literal"><span class="pre">urls.py</span></tt>.</p>
+</li>
+<li><p class="first">Start the dev server and try that url out!  What happens?</p>
+</li>
+<li><p class="first">Re-run the test suite <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">polls</span></tt>.
+What parts (if any) pass now that didn&#8217;t before?  You should be
+seeing lots of &#8220;ViewDoesNotExist&#8221; messages.  (We will create them
+in the next section.  The tests will much more sensible after that!</p>
+</li>
+<li><p class="first">Save and commit.</p>
+</li>
+<li><p class="first">Review:  When somebody requests a page from your Web site
+&#8211; say, &#8220;/polls/23/&#8221;, Django will load the <tt class="docutils literal"><span class="pre">urls.py</span></tt> Python module, because it&#8217;s
+pointed to by the <tt class="docutils literal"><span class="pre">ROOT_URLCONF</span></tt> setting. It finds the variable named <tt class="docutils literal"><span class="pre">urlpatterns</span></tt>
+and traverses the regular expressions in order. When it finds a regular expression that
+matches &#8211; <tt class="docutils literal"><span class="pre">r'^polls/(\d+)/$'</span></tt> &#8211; it loads the function <tt class="docutils literal"><span class="pre">detail()</span></tt> from
+<tt class="docutils literal"><span class="pre">polls/views.py</span></tt>. Finally, it calls that module&#8217;s <tt class="docutils literal"><span class="pre">detail()</span></tt> function like so:</p>
+<div class="highlight-bash"><div class="highlight"><pre>detail<span class="o">(</span><span class="nv">request</span><span class="o">=</span>&lt;HttpRequest object&gt;, <span class="s1">&#39;23&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The &#8216;23&#8217; part comes from <tt class="docutils literal"><span class="pre">(\d+)</span></tt>. Using parentheses around a pattern &#8220;captures&#8221; the
+text matched by that pattern and sends it as an argument to the view function; the
+<tt class="docutils literal"><span class="pre">\d+</span></tt> is a regular expression to match a sequence of <tt class="docutils literal"><span class="pre">digits</span></tt> (i.e., a number).</p>
+</li>
+<li><p class="first">Does this seem magical?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-magical"><em>answer</em></a>]
+Actually, this is less magical than some other parts of Django!  Regular Expressions,
+though sometimes cryptic, are a pretty common and useful skill among developers.</p>
+</li>
+<li><p class="first">The <em>idea</em> that a URL doesn&#8217;t have to map onto a file, or some other sort
+of static resource, is quite powerful.  The URL is just a way of giving
+instructions to some server, somewhere.</p>
+<p>(<strong>Rant</strong>:  In Django, as in most modern frameworks, you have total control
+over the way your URLs look. People on the web
+won&#8217;t see cruft like .py or .php or even .html at the end of your URLs.  There is no
+excuse for that kind of stuff in the modern era!)</p>
+</li>
+<li><p class="first">Exercise:  Think about another hypothetical website, &#8220;MyMagicToa.st&#8221;, in which you use
+a virtual toaster.  What might some actions and (and associated urls)
+be for interacting with it?</p>
+</li>
+</ol>
+</div>
+<div class="section" id="write-some-views">
+<h3>Write Some Views!<a class="headerlink" href="#write-some-views" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Start the development server:  <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></tt></p>
+</li>
+<li><p class="first">Fetch &#8220;<a class="reference external" href="http://127.0.0.1:8000/polls/">http://127.0.0.1:8000/polls/</a>&#8221; in your browser.
+You should get a pleasantly-colored error page with the following message:</p>
+<div class="highlight-none"><div class="highlight"><pre>ViewDoesNotExist at /polls/
+
+Tried index in module polls.views. Error was: &#39;module&#39;
+object has no attribute &#39;index&#39;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Recall this line <tt class="docutils literal"><span class="pre">(r'^polls/$',</span> <span class="pre">'polls.views.index')</span></tt>.</p>
+</li>
+<li><p class="first">Explore this using your django-shell:  <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">shell</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">polls</span>         <span class="c"># imports fine!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">polls.views</span>   <span class="c"># imports fine also!  polls/views.py</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">polls</span><span class="o">.</span><span class="n">views</span><span class="p">)</span> <span class="c"># what is in there!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;index&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">polls</span><span class="o">.</span><span class="n">views</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="n">polls</span><span class="o">.</span><span class="n">views</span><span class="p">)</span>
+<span class="go"># something like</span>
+<span class="go">&#39;/Users/adalovelace/gits/myproject/polls/views.py&#39;</span>
+</pre></div>
+</div>
+<p>So, a mystery?  Where is the view!?  It&#8217;s nowhere!  The URL parsing is going
+fine, but there is no one listening at the other end of the phone!
+This <tt class="docutils literal"><span class="pre">ViewDoesNotExist</span></tt> error happened because you
+haven&#8217;t written a function <tt class="docutils literal"><span class="pre">index()</span></tt> in the module polls/views.py.</p>
+<p>Try <a class="reference external" href="http://127.0.0.1:8000/polls/23/">http://127.0.0.1:8000/polls/23/</a>,  <a class="reference external" href="http://127.0.0.1:8000/polls/23/results/">http://127.0.0.1:8000/polls/23/results/</a> and
+<a class="reference external" href="http://127.0.0.1:8000/polls/23/vote/">http://127.0.0.1:8000/polls/23/vote/</a>, and you
+will see similar messages.
+The error messages tell you which view Django tried
+(and failed to find, because you haven&#8217;t written any views yet).</p>
+</li>
+<li><p class="first">Write some views. Open <tt class="docutils literal"><span class="pre">polls/views.py</span></tt> and put the following Python code in it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;Hello, world. You&#39;re at the poll index.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a very simple view.</p>
+</li>
+<li><p class="first">Save the views.py file, then go to <a class="reference external" href="http://127.0.0.1:8000/polls/">http://127.0.0.1:8000/polls/</a> in your
+browser, and you should see that text.</p>
+</li>
+<li><p class="first">RE-RUN YOUR TESTS.  <strong>POP QUIZ</strong>.  Do more pass?</p>
+</li>
+<li><p class="first">Add a few more views by adding to the <tt class="docutils literal"><span class="pre">views.py</span></tt> file. These views are slightly
+different, because they take an argument (which, remember, is passed in from whatever
+was captured by the regular expression in the URLconf):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># recall or note that %s means, &quot;subsitute in a string&quot;</span>
+
+<span class="k">def</span> <span class="nf">detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You&#39;re looking at poll </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">poll_id</span><span class="p">,))</span>
+
+<span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You&#39;re looking at the results of poll </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">poll_id</span><span class="p">,))</span>
+
+<span class="k">def</span> <span class="nf">vote</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You&#39;re voting on poll </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">poll_id</span><span class="p">,))</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Save <tt class="docutils literal"><span class="pre">views.py</span></tt>.</p>
+</li>
+<li><p class="first">Navigate to <a class="reference external" href="http://127.0.0.1:8000/polls/34/">http://127.0.0.1:8000/polls/34/</a>. It&#8217;ll run the
+<tt class="docutils literal"><span class="pre">detail()</span></tt> method and display whatever ID you provide in the URL.
+Try <a class="reference external" href="http://127.0.0.1:8000/polls/34/results/">http://127.0.0.1:8000/polls/34/results/</a>
+and <a class="reference external" href="http://127.0.0.1:8000/polls/34/vote/">http://127.0.0.1:8000/polls/34/vote/</a> too &#8211;
+these will display the placeholder results and voting pages.</p>
+</li>
+<li><p class="first">Add a little html to the &#8216;results&#8217; view.  Wrap the poll_id in <tt class="docutils literal"><span class="pre">&lt;strong&gt;</span> <span class="pre">&lt;/strong&gt;</span></tt>
+tags and <strong>verify</strong> that the view is indeed bold!</p>
+</li>
+<li><p class="first">RE-RUN YOUR TESTS.  <strong>POP QUIZ</strong>.  Which ones now pass?</p>
+</li>
+<li><p class="first">Add and commit your code.  Remember to write a good commit message that
+mentioned what changed (in English) and more details below.  Mention
+which tests now pass (hint, they are &#8216;reachability&#8217; tests!)</p>
+</li>
+</ol>
+</div>
+<div class="section" id="mockery-mockery">
+<h3>Mockery, Mockery<a class="headerlink" href="#mockery-mockery" title="Permalink to this headline">¶</a></h3>
+<p>These views don&#8217;t plug into <em>real</em> polls.  This is by design.</p>
+<ul class="simple">
+<li>front-end (visual) and back-end (data) can happen simulatenously</li>
+<li>demonstrating the UI of the product shouldn&#8217;t rely on having full data in
+the back end.</li>
+</ul>
+<p>All of this relies on the frontend and backend having a consensus view
+of the <strong>interface</strong> between them.  What does a &#8216;Poll&#8217; look like?  What data
+and methods might it have?  If we knew this, we could construct <strong>mock objects</strong>
+and work with them, instead!  Keeping objects simple makes writing interfaces
+between different layers of the application stack easier.</p>
+<p>We will come back to templates (and use Django&#8217;s built-in templating facilities
+rather than simple python string formatting) after we build some models.</p>
+</div>
+</div>
+<div class="section" id="part-11-showing-off">
+<h2>Part 11:  Showing Off!<a class="headerlink" href="#part-11-showing-off" title="Permalink to this headline">¶</a></h2>
+<p>Time to show our work to the world.  To do this, we are going to use DjangoZoom,
+a fairly new site that makes doing remote deployment easy!  It&#8217;s still in beta,
+and we are going to be guinea pigs for them!</p>
+<ol class="arabic">
+<li><p class="first">Push your code to github</p>
+</li>
+<li><p class="first">Go to:  <a class="reference external" href="http://djangozoom.com/dz2/dashboard/">http://djangozoom.com/dz2/dashboard/</a></p>
+<ol class="arabic">
+<li><p class="first">Login with the credentials given in class.</p>
+</li>
+<li><p class="first">Enter your GitHub url.</p>
+<img alt="../_images/djangozoom14.png" src="../_images/djangozoom14.png" />
+</li>
+<li><p class="first">Rename your project.</p>
+<img alt="../_images/djangozoom24.png" src="../_images/djangozoom24.png" />
+</li>
+<li><p class="first">Navigate to the URL you eventually get, like  <a class="reference external" href="http://p00000058.djangozoom.net/">http://p00000058.djangozoom.net/</a>.</p>
+</li>
+<li><p class="first">OHNOES!  There is no slash (root) view!</p>
+<img alt="../_images/djangozoom_noindex4.png" src="../_images/djangozoom_noindex4.png" />
+</li>
+<li><p class="first">See that &#8216;/polls/&#8217; looks just like how it does on your local machine.</p>
+</li>
+</ol>
+</li>
+<li><p class="first">Fix that locally!</p>
+<ol class="arabic">
+<li><p class="first">in <tt class="docutils literal"><span class="pre">urls.py</span></tt> add:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">urlpatterns</span> <span class="o">=</span> patterns<span class="o">(</span><span class="s1">&#39;&#39;</span>,
+    <span class="o">(</span>r<span class="s1">&#39;^$&#39;</span>, <span class="s1">&#39;polls.views.redirect_to_polls&#39;</span><span class="o">)</span>,
+    <span class="o">(</span>r<span class="s1">&#39;^polls/$&#39;</span>, <span class="s1">&#39;polls.views.index&#39;</span><span class="o">)</span>,
+</pre></div>
+</div>
+</li>
+<li><p class="first">in <tt class="docutils literal"><span class="pre">polls/views.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+
+<span class="k">def</span> <span class="nf">redirect_to_polls</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&#39;/polls/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p class="first">Restart your local server, and hit <a class="reference external" href="http://127.0.0.1/">http://127.0.0.1/</a> .
+What happened?  Look at your logging:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>24/Mar/2011 15:01:15<span class="o">]</span> <span class="s2">&quot;GET / HTTP/1.1&quot;</span> 302 0
+<span class="o">[</span>24/Mar/2011 15:01:15<span class="o">]</span> <span class="s2">&quot;GET /polls/ HTTP/1.1&quot;</span> 200 39
+</pre></div>
+</div>
+<p>See the &#8216;302&#8217;?  By returning a <tt class="docutils literal"><span class="pre">HttpResponseRedirect</span></tt>,
+you <strong>redirected</strong> the user to a different page!  Learn more about status
+codes at <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">http://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a> .</p>
+</li>
+<li><p class="first">Commit and push your changes.</p>
+</li>
+<li><p class="first">Return to DjangoZoom and rebuild.</p>
+<img alt="../_images/djangozoom_build4.png" src="../_images/djangozoom_build4.png" />
+<p>Your redeployed site should have a sensible &#8216;/&#8217; (that redirects to <tt class="docutils literal"><span class="pre">/polls</span></tt>).</p>
+</li>
+</ol>
+<p>Takeaways:</p>
+<ul class="simple">
+<li>pushing to remote location exposed that having the &#8216;/&#8217; behaviour unspecified
+is a little ugly.  This should be added to the spec.</li>
+<li>redirects can hide a multitude of sins.  If you are used to Apache ModRewrite,
+doing it from right in your framework can be a lot easier!</li>
+</ul>
+</div>
+<div class="section" id="part-12-poll-and-choice-models">
+<h2>Part 12: Poll and Choice Models<a class="headerlink" href="#part-12-poll-and-choice-models" title="Permalink to this headline">¶</a></h2>
+<p>Remember those files from <strong>Create The Poll App</strong> above?
+We have worked with <tt class="docutils literal"><span class="pre">views.py</span></tt> and <tt class="docutils literal"><span class="pre">test.py</span></tt>.  Let&#8217;s tackle <tt class="docutils literal"><span class="pre">models.py</span></tt>
+next and make some actual data for our views to see!</p>
+<div class="admonition-django-philosophy admonition ">
+<p class="first admonition-title">Django-Philosophy</p>
+<p>A model is the single, definitive source of data about your data.
+It contains the essential fields and behaviors of the data you&#8217;re storing.
+Django follows the DRY (&#8220;Don&#8217;t Repeat Yourself&#8221;) Principle. The goal is to
+define your data model in one place and automatically derive things from it.</p>
+<p class="last">(If you&#8217;ve used SQL before, you might be interested to know that each
+Django <tt class="docutils literal"><span class="pre">model</span></tt> corresponds to a SQL <tt class="docutils literal"><span class="pre">table</span></tt>.  This simple correspondence
+between models and tables is a design choice, and not everyone likes it. [<a class="reference internal" href="../webapp_answers.html#webapp-answers-no-like-django"><em>discussion</em></a>])</p>
+</div>
+<p>In our simple poll app, we&#8217;ll create two models: <tt class="docutils literal"><span class="pre">Polls</span></tt> and <tt class="docutils literal"><span class="pre">Choices</span></tt>.  As per our
+spec from the customer:</p>
+<ul>
+<li><p class="first">A poll has:</p>
+<blockquote>
+<div><ul class="simple">
+<li>a question</li>
+<li>a publication date.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">A choice has two fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the text of the choice</li>
+<li>a vote tally.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Each <tt class="docutils literal"><span class="pre">Choice</span></tt> is associated with a <tt class="docutils literal"><span class="pre">Poll</span></tt> and each <tt class="docutils literal"><span class="pre">Poll</span></tt> has associated <tt class="docutils literal"><span class="pre">Choices</span></tt>.
+We will respesent these concepts with python classes derived from <tt class="docutils literal"><span class="pre">django.db.models</span></tt>.</p>
+<ol class="arabic">
+<li><p class="first">Edit the <tt class="docutils literal"><span class="pre">polls/models.py</span></tt> file so it looks like this:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">poll</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Poll</span><span class="p">)</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">votes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Save the <tt class="docutils literal"><span class="pre">models.py</span></tt> file.</p>
+</li>
+</ol>
+<p>All models in Django code are represented by a class that subclasses
+<tt class="docutils literal"><span class="pre">django.db.models.Model</span></tt>. Each model has a number of class variables,
+each of which represents a database field in the model.  (cf:
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/db/models/">http://docs.djangoproject.com/en/dev/topics/db/models/</a>)</p>
+<p>Each field is represented by an instance of a Field class &#8211; e.g., <tt class="docutils literal"><span class="pre">CharField</span></tt>
+for character fields and <tt class="docutils literal"><span class="pre">DateTimeField</span></tt> for datetimes. This tells Django
+what type of data each field holds.</p>
+<p>The name of each Field instance (e.g. question or pub_date) is the field&#8217;s
+name, in machine-friendly format. You&#8217;ll use this value in your Python code,
+and your database will use it as the column name.</p>
+<p>Some Field classes have required elements. <tt class="docutils literal"><span class="pre">CharField</span></tt>, for example, requires
+that you give it a <tt class="docutils literal"><span class="pre">max_length</span></tt>. That&#8217;s used not only in the database schema,
+but in validation, as we&#8217;ll soon see.</p>
+<p>Finally, note a relationship is defined, using <tt class="docutils literal"><span class="pre">ForeignKey</span></tt>. That tells Django each
+<tt class="docutils literal"><span class="pre">Choice</span></tt> is related to a single <tt class="docutils literal"><span class="pre">Poll</span></tt>. Django supports all the common database
+relationships: many-to-ones, many-to-manys and one-to-ones.</p>
+<div class="section" id="make-the-models-migrate-able">
+<h3>Make the Models Migrate-able<a class="headerlink" href="#make-the-models-migrate-able" title="Permalink to this headline">¶</a></h3>
+<p>When you create your models, you might not always know exactly what fields your models will need in advance. Maybe someday your polls app will have multiple users, and you&#8217;ll want to keep track of the author of each poll! Then you would want to add another field to the model to store that information.</p>
+<p>Unfortunately, Django (and most database-using software) can&#8217;t figure out how to handle model changes very well on its own. Fortunately, a Django app called <tt class="docutils literal"><span class="pre">`south`</span></tt> can handle these changes&#8211;called &#8216;migrations&#8217;&#8211;for us.</p>
+<p>Now that we&#8217;ve made our first version of our models file, let&#8217;s set up our polls app to work with South so that we can make migrations with it in the future!</p>
+<ol class="arabic">
+<li><p class="first">On the command line, write:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python manage.py schemamigration polls --initial
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>As you can see, that’s created a migrations directory for us, and made a new migration inside it. All we need to do now is apply our new migration:</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python manage.py migrate polls
+</pre></div>
+</div>
+</div></blockquote>
+<p>Great! Now our database file knows about polls and its new models, and if we need to change our models, South is set up to handle those change. We&#8217;ll come back to South later.</p>
+</div>
+<div class="section" id="activate-the-models">
+<h3>Activate The Models<a class="headerlink" href="#activate-the-models" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">models.py</span></tt> gives Django a lot of information. With it, Django is able to:</p>
+<ul class="simple">
+<li>Create a database schema (<tt class="docutils literal"><span class="pre">CREATE</span> <span class="pre">TABLE</span></tt> statements) for this app.</li>
+<li>Create a Python database-access API for accessing <tt class="docutils literal"><span class="pre">Poll</span></tt> and <tt class="docutils literal"><span class="pre">Choice</span></tt> objects.</li>
+</ul>
+<p>But first we need to tell our project that the polls app is installed.</p>
+<ol class="arabic simple">
+<li>Verify that <tt class="docutils literal"><span class="pre">settings.py</span></tt> has <tt class="docutils literal"><span class="pre">polls</span></tt> as part of the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt>.  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-added-polls"><em>answer</em></a>]</li>
+</ol>
+</div>
+<div class="section" id="commit">
+<h3>Commit!<a class="headerlink" href="#commit" title="Permalink to this headline">¶</a></h3>
+<p>Add and commit all your work.</p>
+</div>
+<div class="section" id="synchronize-the-database">
+<h3>Synchronize the Database<a class="headerlink" href="#synchronize-the-database" title="Permalink to this headline">¶</a></h3>
+<p>Now Django knows to include the polls app.</p>
+<ol class="arabic">
+<li><p class="first">Let&#8217;s make sure that our database is up to date.</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py syncdb
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The syncdb looks for <tt class="docutils literal"><span class="pre">apps</span></tt> that have not yet been set up, or have changed in ways that it can understand. To set them up,
+it runs the necessary SQL commands against your database. This creates all the
+tables, initial data and indexes for any apps you have added to your project since
+the last time you ran syncdb. syncdb can be called as often as you like, and it
+will only ever create the tables that don&#8217;t exist.</p>
+<p><cite>More info</cite>: Read the django-admin.py <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/django-admin/">documentation</a> for full information on what the manage.py utility can do.</p>
+</div>
+<div class="section" id="explore-the-api">
+<h3>Explore The Api<a class="headerlink" href="#explore-the-api" title="Permalink to this headline">¶</a></h3>
+<p>Now, let&#8217;s hop into the interactive Python shell and play around with
+the free API Django gives you. To invoke the Python shell, use this command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py shell
+</pre></div>
+</div>
+<p>We&#8217;re using this instead of simply typing &#8220;python&#8221;, because manage.py sets
+up the project&#8217;s environment for you. &#8220;Setting up the environment&#8221; involves two things:</p>
+<ol class="arabic simple">
+<li>Making sure <tt class="docutils literal"><span class="pre">polls</span></tt> is on the right path to be imported.</li>
+<li>Setting the <tt class="docutils literal"><span class="pre">DJANGO_SETTINGS_MODULE</span></tt> environment variable, which gives Django the path to your <tt class="docutils literal"><span class="pre">settings.py</span></tt> file.</li>
+</ol>
+<p>Once you&#8217;re in the shell, explore the database API:</p>
+<ol class="arabic">
+<li><p class="first">import the model classes we just wrote:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span><span class="p">,</span> <span class="n">Choice</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">list all the current Polls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>How many polls is this?</p>
+</li>
+<li><p class="first"><cite>Zen koan:  Can there be a Choice for a Poll that doesn&#8217;t yet exist?</cite></p>
+</li>
+<li><p class="first">Add a <tt class="docutils literal"><span class="pre">Poll</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Poll</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s">&quot;What is the Weirdest Cookbook Ever?&quot;</span><span class="p">,</span> <span class="n">pub_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Save the <tt class="docutils literal"><span class="pre">Poll</span></tt> instance into the database. You have to call save() explicitly.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Get the <tt class="docutils literal"><span class="pre">id</span></tt> of the Poll instance. Because it&#8217;s been saved, it has an ID in the database</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">id</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">What other methods and attributes does this <tt class="docutils literal"><span class="pre">Poll</span></tt> instance have?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Access the database columns (Fields, in Django parlance) as Python attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">question</span>
+<span class="go">&quot;What is the Weirdest Cookbook Ever?&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">pub_date</span>
+<span class="go">datetime.datetime(2007, 7, 15, 12, 00, 53)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Send the Poll back in time:</p>
+<div class="highlight-python"><pre># Change values by changing the attributes, then calling save().
+&gt;&gt;&gt; p.pub_date = datetime.datetime(2007, 4, 1, 0, 0)
+&gt;&gt;&gt; p.save()
+&gt;&gt;&gt; p.pub_date
+datetime.datetime(2007, 4, 1, 0, 0)</pre>
+</div>
+</li>
+<li><p class="first">Ask Django to show a list of all the Poll objects available:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">[&lt;Poll: Poll object&gt;]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="fix-the-hideous-default-representation">
+<h3>Fix The Hideous Default Representation<a class="headerlink" href="#fix-the-hideous-default-representation" title="Permalink to this headline">¶</a></h3>
+<p>Wait a minute!  <tt class="docutils literal"><span class="pre">&lt;Poll:</span> <span class="pre">Poll</span> <span class="pre">object&gt;</span></tt> is an utterly unhelpful, truly wretched, beyond comtemptable representation of this object. Let&#8217;s fix that by editing the <tt class="docutils literal"><span class="pre">Polls</span></tt> model.
+Use your <tt class="docutils literal"><span class="pre">text</span> <span class="pre">editor</span></tt> to open the polls/models.py file and adding a <tt class="docutils literal"><span class="pre">__unicode__()</span></tt> method to both <tt class="docutils literal"><span class="pre">Poll</span></tt> and <tt class="docutils literal"><span class="pre">Choice</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">question</span>
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span>
+</pre></div>
+</div>
+<p>It&#8217;s important to add <tt class="docutils literal"><span class="pre">__unicode__()</span></tt> methods to your models, not only for your own sanity when dealing with the interactive prompt, but also because objects&#8217; representations are used throughout Django&#8217;s automatically-generated admin.</p>
+<p>(If you&#8217;re using to Python programming from a time in the past, you might have seen <tt class="docutils literal"><span class="pre">__str__()</span></tt>. Django prefers you use __unicode__() instead.)</p>
+<ol class="arabic">
+<li><p class="first">Enough of these <cite>normal</cite> python methods!</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="c"># ...</span>
+<span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="k">def</span> <span class="nf">was_published_today</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_date</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="o">==</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note the addition of <tt class="docutils literal"><span class="pre">import</span> <span class="pre">datetime</span></tt> to reference Python&#8217;s standard <tt class="docutils literal"><span class="pre">datetime</span></tt> module. This allows
+us to use the datetime library module in <tt class="docutils literal"><span class="pre">models.py</span></tt> by calling it with <tt class="docutils literal"><span class="pre">datetime</span></tt>. To see what functions
+come with a module, you can test it in the interactive shell:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+<span class="go">[&#39;MAXYEAR&#39;, &#39;MINYEAR&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;date&#39;, &#39;datetime&#39;,</span>
+<span class="go">&#39;datetime_CAPI&#39;, &#39;time&#39;, &#39;timedelta&#39;, &#39;tzinfo&#39;]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Save these changes to the <tt class="docutils literal"><span class="pre">models.py</span></tt> file</p>
+</li>
+<li><p class="first">Start a new Python interactive shell by running <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">shell</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span><span class="p">,</span> <span class="n">Choice</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Verify our __unicode__() addition worked:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">[&lt;Poll: What is the Weirdest Cookbook Ever?&gt;]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Search your database using the <tt class="docutils literal"><span class="pre">filter</span></tt> method on the <tt class="docutils literal"><span class="pre">objects</span></tt> attribute of <tt class="docutils literal"><span class="pre">Poll</span></tt>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">polls</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s">&quot;What is the Weirdest Cookbook Ever?&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polls</span>
+<span class="go">[&lt;Poll: What is the Weirdest Cookbook Ever?&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>  <span class="c"># remember python lists start with element 0.</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>If you try to search for a poll that does not exist, <tt class="docutils literal"><span class="pre">filter</span></tt> will give you the empty list. The <tt class="docutils literal"><span class="pre">get</span></tt> method will always return one hit, or raise an exception.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s">&quot;What is the Weirdest Cookbook Ever?&quot;</span><span class="p">)</span>
+<span class="go">[]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&lt;Poll: What is the Weirdest Cookbook Ever?&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="nc">DoesNotExist</span>: <span class="n-Identifier">Poll matching query does not exist.</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="add-choices">
+<h3>Add Choices<a class="headerlink" href="#add-choices" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Observe, there is a Poll in the database, but it has no Choices.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create three choices:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="s">&#39;To Serve Man&#39;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;Choice: To Serve Man&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="s">&#39;The Original Road Kill Cookbook&#39;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;Choice: The Original Road Kill Cookbook&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="s">&#39;Mini-Mart A La Carte&#39;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">&lt;Choice: Mini-Mart A La Carte&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go in reverse!  Find the poll a particular choice belongs to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">poll</span>
+<span class="go">&lt;Poll: What is the Weirdest Cookbook Ever?&gt;</span>
+</pre></div>
+</div>
+<p>Because a Poll can have more than one Choice, Django creates the <tt class="docutils literal"><span class="pre">choice_set</span></tt> attribute on each <tt class="docutils literal"><span class="pre">Poll</span></tt>. You can use that to look at the list of available Choices, or to create them.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">[&lt;Choice: To Serve Man&gt;, &lt;Choice: The Original Road Kill Cookbook&gt;, &lt;Choice: Mini-Mart A La Carte&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">No really.  Can one be a <tt class="docutils literal"><span class="pre">Choice</span></tt> for a <tt class="docutils literal"><span class="pre">Poll</span></tt> that doesn&#8217;t yet exist?:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">koan</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="s">&quot;Is this even a choice&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">koan</span><span class="o">.</span><span class="n">poll_id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">koan</span><span class="o">.</span><span class="n">poll</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="heavy-metal-polling">
+<h3>Heavy Metal Polling!<a class="headerlink" href="#heavy-metal-polling" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Paste this block of code into a separate file, run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">shell</span></tt>, import and run this block of TOTALLY METAL CODE:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Choice</span><span class="p">,</span><span class="n">Poll</span>
+
+<span class="n">opinions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;HEINOUS!&#39;</span><span class="p">,</span> <span class="s">&#39;suxxors&#39;</span><span class="p">,</span> <span class="s">&#39;rulez!&#39;</span><span class="p">,</span>
+<span class="s">&#39;AWESOME!&#39;</span><span class="p">,</span> <span class="s">&#39;righTEOUS&#39;</span><span class="p">,</span> <span class="s">&#39;HAVE MY BABY!!!!&#39;</span><span class="p">,</span>
+<span class="s">&#39;BEYOND METAL&#39;</span><span class="p">,</span><span class="s">&#39;SUCKS&#39;</span><span class="p">,</span><span class="s">&#39;RULES&#39;</span><span class="p">,</span> <span class="s">&#39;TOTALLY RULES&#39;</span><span class="p">]</span>
+
+<span class="n">band_names</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">Abonos Meshuggah Xasthur Silencer Fintroll Beherit Basilisk Cryptopsy</span>
+<span class="s">Tvangeste Weakling Anabantha Behemoth Moonsorrow Morgoth Nattefrost</span>
+<span class="s">Aggaloch Enthroned Korpiklaani Nile Summoning Nocturnia Smothered</span>
+<span class="s">Scatered Summoning Wyrd Amesoeurs Solstafi Helrunar Vargnatt Agrypnie</span>
+<span class="s">Wyrd Agrypnie Blodsrit Burzum Chaostar Decadence Bathory Leviathan</span>
+<span class="s">Hellraiser Mayhem Katharsis Helheim Agalloch Therion Windir Ragnarok</span>
+<span class="s">Arckanum Durdkh Emperor Sulphur Tsjuder Ulver Marduk Luror Edguy</span>
+<span class="s">Enslaved Epica Gorgoroth Gothminister Immortal Isengard Kamelot</span>
+<span class="s">Kataklysm Kreator Maras Megadeath Metallica Moonspell Morgul Morok</span>
+<span class="s">Morphia Necrophagist Opeth Origin Pantera Pestilence Putrefy Vader</span>
+<span class="s">Runenblut Possessed Sanatorium Profanum Satyricon Antichrist Sepultura</span>
+<span class="s">Eluveitie Altare Gallhammer Sirenia Slavland Krada Tribulation Venom</span>
+<span class="s">ObituarObituarObituarObituarObituarObituarismember Vomitory</span>
+<span class="s">Suffocation Taake Testament ToDieFor Unleashed&#39;&#39;&#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">make_metal_poll</span><span class="p">(</span><span class="n">bandname</span><span class="p">,</span><span class="n">opinions</span><span class="p">):</span>
+    <span class="n">pub</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">marks</span> <span class="o">=</span> <span class="s">&#39;?&#39;</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">bandname</span> <span class="o">+</span> <span class="n">marks</span>
+    <span class="n">chosen</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">opinions</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chosen</span><span class="p">:</span>
+        <span class="n">votes</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Choice</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="n">c</span><span class="p">,</span><span class="n">votes</span><span class="o">=</span><span class="n">votes</span><span class="p">))</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Poll</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span><span class="n">pub_date</span><span class="o">=</span><span class="n">pub</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">=</span><span class="n">choices</span>
+    <span class="k">return</span> <span class="n">p</span>
+
+<span class="n">polls</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_metal_poll</span><span class="p">(</span><span class="n">band</span><span class="p">,</span><span class="n">opinions</span><span class="p">)</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">band_names</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Discuss what this code does!</p>
+</li>
+</ol>
+</div>
+<div class="section" id="test-the-models">
+<h3>Test the Models<a class="headerlink" href="#test-the-models" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Save your changes, and Re-run your tests.  What now passes?</li>
+</ol>
+</div>
+<div class="section" id="change-the-models">
+<h3>Change the models<a class="headerlink" href="#change-the-models" title="Permalink to this headline">¶</a></h3>
+<p>Oh no! Your client, VOEL, has decided that they want to add a feature to the spec for the polling app. Namely, it&#8217;s not enough for them to know the poll question and creation date &#8211; they want it to be possible for polls to have closing dates, after which voting on the poll is closed. Which means we&#8217;re going to have to change our model.</p>
+<ol class="arabic">
+<li><p class="first">Open polls/models.py and edit the Poll class:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Poll</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>By setting <tt class="docutils literal"><span class="pre">blank=True</span></tt> and <tt class="docutils literal"><span class="pre">null=True</span></tt>, we&#8217;re telling Django that this field is optional, so it&#8217;s okay if it&#8217;s empty and a poll doesn&#8217;t have an end date.</p>
+<ol class="arabic">
+<li><p class="first">Make a migration so the database knows about the new <tt class="docutils literal"><span class="pre">end_date</span></tt> field.</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python manage.py schemamigration polls --auto
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Apply the migration.</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python manage.py migrate polls
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="save-and-commit">
+<h3>Save and commit<a class="headerlink" href="#save-and-commit" title="Permalink to this headline">¶</a></h3>
+<p>You know the drill!</p>
+</div>
+<div class="section" id="forget-about-data-models-for-now">
+<h3>Forget about data models for now!<a class="headerlink" href="#forget-about-data-models-for-now" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Did you eat lunch yet?</li>
+<li>Maybe it&#8217;s time for a snack?</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-13-write-views-with-power">
+<h2>Part 13:  Write Views With Power<a class="headerlink" href="#part-13-write-views-with-power" title="Permalink to this headline">¶</a></h2>
+<p>In Django, each view is responsible for doing one of two things: <tt class="docutils literal"><span class="pre">returning</span></tt> an <tt class="docutils literal"><span class="pre">HttpResponse</span></tt>
+object containing the content for the requested page, or <tt class="docutils literal"><span class="pre">raise</span></tt>-ing an exception such
+as <tt class="docutils literal"><span class="pre">Http404</span></tt>. What happens between Request and Response?  [<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-magical"><em>Magic!</em></a>].</p>
+<p>Your view can read records from a database, or not. It can use a template system such
+as Django&#8217;s &#8211; or not. It can generate a PDF file, output XML, create a ZIP file on the fly,
+anything you want, using whatever Python libraries you want.</p>
+<p>All Django wants is that at the end, it gets an <tt class="docutils literal"><span class="pre">HttpResponse</span></tt> or an <tt class="docutils literal"><span class="pre">exception</span></tt>.</p>
+<p>Most of the Django views in the world use Django&#8217;s own database API, which was touched on
+in the discuss of models.  (Sorry, I guess we can&#8217;t forget about databases quite yet!)</p>
+<ol class="arabic">
+<li><p class="first">Construct a better <tt class="docutils literal"><span class="pre">index()</span></tt> view.  To match the spec, it should
+displays the latest 5 poll questions in the system, separated by commas,
+according to publication date.</p>
+<p>Edit <tt class="docutils literal"><span class="pre">views.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">latest_poll_list</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-pub_date&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">question</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">latest_poll_list</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart the dev server, and navigate to <a class="reference external" href="http://127.0.0.1:8000/polls/">http://127.0.0.1:8000/polls/</a>.
+You should see the text of the last 5 HEAVY METAL polls.
+There&#8217;s a problem here, though: The page&#8217;s design is hard-coded
+in the view. If you want to change the way the page looks, you&#8217;ll have to edit this Python
+code.</p>
+</li>
+<li><p class="first">Use Django&#8217;s template system to separate the design from Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">latest_poll_list</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-pub_date&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;latest_poll_list&#39;</span><span class="p">:</span> <span class="n">latest_poll_list</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;polls/index.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To recap what this does:</p>
+<ul class="simple">
+<li>Creates a variable called <tt class="docutils literal"><span class="pre">latest_poll_list</span></tt>. Django queries the database for <tt class="docutils literal"><span class="pre">all</span></tt> Poll objects, ordered by <tt class="docutils literal"><span class="pre">pub_date</span></tt> with most recent first, and uses <tt class="docutils literal"><span class="pre">slicing</span></tt> to get the first five.</li>
+<li>Creates a variable called <tt class="docutils literal"><span class="pre">context</span></tt> that is a dictionary with one key.</li>
+<li>Evaluates the <tt class="docutils literal"><span class="pre">render_to_response</span></tt> function with two arguments, and returns whatever that returns.</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">render_to_response</span></tt> loads the template called <tt class="docutils literal"><span class="pre">polls/index.html</span></tt> and passes it a
+value as <tt class="docutils literal"><span class="pre">context</span></tt>. The context is a dictionary mapping template variable names to
+Python objects.</p>
+<p>If you can read this this <tt class="docutils literal"><span class="pre">view</span></tt> function without being overwhelmed, then you understand
+the basics of Django views. Now is a good time to reflect and make sure you do.</p>
+<ol class="arabic simple">
+<li>What would you have to change to get 10 polls?</li>
+<li>What if you wanted the first 10 <em>by name</em>?</li>
+</ol>
+</li>
+<li><p class="first">Reload <a class="reference external" href="http://127.0.0.1:8000/polls/">http://127.0.0.1:8000/polls/</a>. Now you&#8217;ll see an error:</p>
+<div class="highlight-bash"><div class="highlight"><pre>TemplateDoesNotExist at /polls/
+polls/index.html
+</pre></div>
+</div>
+<p>Ah. There&#8217;s no template yet. Let&#8217;s make one.</p>
+</li>
+<li><p class="first">Make a <tt class="docutils literal"><span class="pre">polls/templates/poll</span></tt> directory where templates will live.
+Right alongside the <tt class="docutils literal"><span class="pre">views.py</span></tt> for the <tt class="docutils literal"><span class="pre">polls</span></tt> app. This is what I would do:</p>
+<div class="highlight-bash"><div class="highlight"><pre>mkdir -p polls/templates/polls
+</pre></div>
+</div>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">polls/templates/polls/index.html</span></tt> to contain.</p>
+<div class="highlight-html"><div class="highlight"><pre>{% if latest_poll_list %}
+    <span class="nt">&lt;ul&gt;</span>
+    {% for poll in latest_poll_list %}
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/polls/{{ poll.id }}/&quot;</span><span class="nt">&gt;</span>{{ poll.question }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    {% endfor %}
+    <span class="nt">&lt;/ul&gt;</span>
+{% else %}
+    <span class="nt">&lt;p&gt;</span>No polls are available.<span class="nt">&lt;/p&gt;</span>
+{% endif %}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></tt> in <tt class="docutils literal"><span class="pre">settings.py</span></tt> to have the full path to the templates folder inside your new app. On my computer, this looks like:</p>
+<blockquote>
+<div><div class="highlight-python"><pre> TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    '/karen/Code/pystarl/django-projects/myproject/polls/templates',
+)</pre>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Reload <a class="reference external" href="http://127.0.0.1:8000/polls/">http://127.0.0.1:8000/polls/</a> .
+You should see a bulleted-list containing some of the HEAVY METAL POLLS.
+There should also be link pointing to the poll&#8217;s detail page.</p>
+</li>
+<li><p class="first">RE-RUN your tests.  Save and Commit.</p>
+</li>
+</ol>
+<div class="section" id="fix-the-detail-view-and-handle-user-errors-using-a-404">
+<h3>Fix The Detail View and Handle User Errors using a 404<a class="headerlink" href="#fix-the-detail-view-and-handle-user-errors-using-a-404" title="Permalink to this headline">¶</a></h3>
+<p>Now, let&#8217;s tackle the poll detail view &#8211; the page that displays the question for a
+given poll.</p>
+<ol class="arabic">
+<li><p class="first">Edit the <tt class="docutils literal"><span class="pre">views.py</span></tt> file. This view uses Python <tt class="docutils literal"><span class="pre">exceptions</span></tt>:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">Http404</span>
+<span class="c"># ...</span>
+<span class="k">def</span> <span class="nf">detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">poll_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Poll</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;polls/detail.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;poll&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Notice that view raises the <tt class="docutils literal"><span class="pre">Http404</span></tt> exception if a poll with the
+requested ID doesn&#8217;t exist.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Create <tt class="docutils literal"><span class="pre">polls/templates/polls/detail.html</span></tt> with:</p>
+<div class="highlight-html"><div class="highlight"><pre>{{ poll }}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Verify your &#8220;detail&#8221; view works. Try it: <a class="reference external" href="http://127.0.0.1:8000/polls/1/">http://127.0.0.1:8000/polls/1/</a></p>
+</li>
+<li><p class="first">Re-run your tests.  Note that we get in, we get a pesky
+<tt class="docutils literal"><span class="pre">TemplateDoesNotExist:</span> <span class="pre">404.html</span></tt> message.  Let&#8217;s fix that!</p>
+<p>Create <tt class="docutils literal"><span class="pre">polls/templates/404.html</span></tt> (the polls template root dir) as:</p>
+<div class="highlight-python"><pre>&lt;p&gt;You have a 404.  Go back and try again.&lt;/p&gt;</pre>
+</div>
+</li>
+<li><p class="first">Save and commit.</p>
+</li>
+<li><p class="first">Load a poll page that does not exist, to test out the
+pretty 404 error: <a class="reference external" href="http://127.0.0.1:8000/polls/100000000000/">http://127.0.0.1:8000/polls/100000000000/</a></p>
+<ol class="arabic simple">
+<li>What?  It says DEBUG has to be False?  All right, set it (in <tt class="docutils literal"><span class="pre">settings.py</span></tt>), and
+try again!</li>
+<li>(note:  Chrome &#8216;eats&#8217; the 404.  Safari will show our created page.)</li>
+<li>Change DEBUG back to True</li>
+<li>Re-run the tests, and show the <tt class="docutils literal"><span class="pre">TemplateDoesNotExist:</span> <span class="pre">404.html</span></tt>
+goes away.</li>
+<li>Save and commit.</li>
+</ol>
+</li>
+<li><p class="first"><strong>Discussion</strong>:  raising a 404 here (Page Not Found) is meant to be
+illustrative.  404 is a blunt tool.  In a real application, maybe we
+would redirect the user to the &#8216;create a poll&#8217; page, or the search page.</p>
+<p><strong>Discuss</strong> in your group what behavior <em>should</em> happen in this case.</p>
+<ol class="arabic simple">
+<li>Why did the user land here?</li>
+<li>What did they expect to find?</li>
+<li>What should happen next?</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="add-more-detail-to-the-details">
+<h3>Add More Detail to the Details<a class="headerlink" href="#add-more-detail-to-the-details" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Add more detail to the <tt class="docutils literal"><span class="pre">detail</span></tt> view.</p>
+</li>
+<li><p class="first">Edit the <tt class="docutils literal"><span class="pre">polls/detail.html</span></tt> template to add a <tt class="docutils literal"><span class="pre">poll</span></tt> variable.
+<tt class="docutils literal"><span class="pre">poll</span></tt>  points  the particular instance of the Poll class.</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>{{ poll.question }}<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+{% for choice in poll.choice_set.all %}
+    <span class="nt">&lt;li&gt;</span>{{ choice.choice }}<span class="nt">&lt;/li&gt;</span>
+{% endfor %}
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">django.template</span></tt> system uses dot-lookup syntax to access variable attributes.
+Django&#8217;s template language is a bit looser than standard python.
+In pure Python, the <tt class="docutils literal"><span class="pre">.</span></tt> (dot) only
+lets you get attributes from objects, and we would need to use <cite>[]</cite> to
+access parts of <tt class="docutils literal"><span class="pre">list</span></tt>, <tt class="docutils literal"><span class="pre">tuple</span></tt> or <tt class="docutils literal"><span class="pre">dict</span></tt> objects.
+In this example, we are just doing attribute
+lookup, but in general if you&#8217;re not sure how to get data out of an object in
+<tt class="docutils literal"><span class="pre">django.templates</span></tt>, try <tt class="docutils literal"><span class="pre">dot</span></tt>.</p>
+<p>Method-calling happens in the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">%}</span></tt> loop: <tt class="docutils literal"><span class="pre">poll.choice_set.all</span></tt> is interpreted as the
+Python code <tt class="docutils literal"><span class="pre">poll.choice_set.all()</span></tt>, which returns a sequence of <tt class="docutils literal"><span class="pre">Choice</span></tt>
+objects and is suitable for use in the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">%}</span></tt> template tag.</p>
+</li>
+<li><p class="first">Reload <a class="reference external" href="http://127.0.0.1:8000/polls/1/">http://127.0.0.1:8000/polls/1/</a> .  Observe that the poll choices now appear.</p>
+</li>
+<li><p class="first">Save and commit your changes.</p>
+</li>
+<li><p class="first"><em>Detail yourself</em> to go <em>view</em> out a window, get a drink of water, and
+let your eyes rest.</p>
+<p>Yes, that means you!</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-14-deploy-again">
+<h2>Part 14:  Deploy Again<a class="headerlink" href="#part-14-deploy-again" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Commit and Push.</li>
+<li>Refresh your project on DjangoZoom.</li>
+<li>Go to <a class="reference external" href="http://127.0.0.1:8000/polls/1/">http://127.0.0.1:8000/polls/1/</a> .  Is there anything there?  Why not?</li>
+</ol>
+<p>Takeaway:  Your local datastore (here, <tt class="docutils literal"><span class="pre">database.db</span></tt>) is not present on
+DjangoZoom, and the data here and there can (and will!) be different.</p>
+</div>
+<div class="section" id="part-15-let-the-people-vote">
+<h2>Part 15: Let the people vote<a class="headerlink" href="#part-15-let-the-people-vote" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-the-form">
+<h3>Create the form<a class="headerlink" href="#create-the-form" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Recall that the prototype spec allows users to vote up and vote down choices
+on polls.  We are going to use a <em>form</em> for that functionality.  As an
+alternative, we could have used AJAX Requests, a special
+url (&#8216;/polls/11/choice/3/upvote&#8217;) or some other mechanism.</p>
+</li>
+<li><p class="first">Update our poll detail template (<tt class="docutils literal"><span class="pre">polls/detail.html</span></tt>) to contain
+an HTML &lt;form&gt; element:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>{{ poll.question }}<span class="nt">&lt;/h1&gt;</span>
+
+{% if error_message %}<span class="nt">&lt;p&gt;&lt;strong&gt;</span>{{ error_message }}<span class="nt">&lt;/strong&gt;&lt;/p&gt;</span>{% endif %}
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;/polls/{{ poll.id }}/vote/&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+{% csrf_token %}
+{% for choice in poll.choice_set.all %}
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;choice&quot;</span> <span class="na">value=</span><span class="s">&quot;{{ choice.id }}&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;label&gt;</span>{{ choice.choice }}<span class="nt">&lt;/label&gt;&lt;br</span> <span class="nt">/&gt;</span>
+{% endfor %}
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Vote&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">There is a lot going on there. A quick rundown:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">The above template displays a radio button for each poll choice. The value of each radio button is the associated poll choice&#8217;s ID. The name of each radio button is &#8220;choice&#8221;. That means, when somebody selects one of the radio buttons and submits the form, the form submission will represent the Python dictionary <tt class="docutils literal"><span class="pre">{'choice':</span> <span class="pre">'3'}</span></tt>. That&#8217;s the basics of HTML forms; you can learn more about them at your local library!</p>
+</li>
+<li><p class="first">We set the form&#8217;s</p>
+<ul class="simple">
+<li>action to <tt class="docutils literal"><span class="pre">/polls/{{</span> <span class="pre">poll.id</span> <span class="pre">}}/vote/</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">method=&quot;post&quot;</span></tt>.</li>
+</ul>
+<p>Normal web pages are requested using <tt class="docutils literal"><span class="pre">GET</span></tt>, but the standards for HTTP indicate that if you are changing data on the server, you must use the <tt class="docutils literal"><span class="pre">POST</span></tt> method. (Whenever you create a form that alters data server-side, use <tt class="docutils literal"><span class="pre">method=&quot;post&quot;</span></tt>. This tip isn&#8217;t specific to Django; it&#8217;s just good Web development practice!)</p>
+</li>
+<li><p class="first">Since we&#8217;re creating a POST form (which can have the effect of modifying data), we need to worry about Cross Site Request Forgeries. Thankfully, you don&#8217;t have to worry too hard, because Django comes with a very easy-to-use system for protecting against it. In short, all POST forms that are targeted at internal URLs should use the <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">csrf_token</span> <span class="pre">%}</span></tt> template tag.</p>
+<p>The <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">csrf_token</span> <span class="pre">%}</span></tt> tag requires information from the request object, which is not
+normally accessible from within the template context. To fix this, a small adjustment
+needs to be made to the detail view in the <tt class="docutils literal"><span class="pre">views.py</span></tt> file.</p>
+<ol class="arabic simple">
+<li>Fix <tt class="docutils literal"><span class="pre">views.py</span></tt> to protect against CSRF hacking:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">render_to_response</span>
+<span class="c"># ...</span>
+<span class="k">def</span> <span class="nf">detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Poll</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">poll_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;polls/detail.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;poll&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">},</span> <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Notice we also added a function that checks if a <tt class="docutils literal"><span class="pre">404</span></tt> is returned for us.
+This is a common pattern, so there is a pre-built shortcut function for it
+so we can use fewer lines of code! The details of how the <tt class="docutils literal"><span class="pre">RequestContext</span></tt> works are explained in the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/templates/api/#subclassing-context-requestcontext">documentation for RequestContext</a></p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Review your work at <a class="reference external" href="http://127.0.0.1:8000/polls/1/">http://127.0.0.1:8000/polls/1/</a> .</p>
+</li>
+<li><p class="first">Save and commit.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="process-the-form">
+<h3>Process the form<a class="headerlink" href="#process-the-form" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Recall that our <tt class="docutils literal"><span class="pre">urls.py</span></tt> includes:</p>
+<div class="highlight-html"><div class="highlight"><pre>(r&#39;^(?P<span class="nt">&lt;poll</span><span class="na">_id</span><span class="nt">&gt;</span>\d+)/vote/$&#39;, &#39;vote&#39;),
+</pre></div>
+</div>
+</li>
+<li><p class="first">Recall also that we created a dummy implementation of the <tt class="docutils literal"><span class="pre">vote()</span></tt> function.</p>
+</li>
+<li><p class="first">Create a real version of <tt class="docutils literal"><span class="pre">vote()</span></tt>. Add the following to <tt class="docutils literal"><span class="pre">polls/views.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Choice</span><span class="p">,</span> <span class="n">Poll</span>
+<span class="c"># ...</span>
+<span class="k">def</span> <span class="nf">vote</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Poll</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">poll_id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">selected_choice</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;choice&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">Choice</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">):</span>
+        <span class="c"># Redisplay the poll voting form.</span>
+        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;polls/detail.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;poll&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+            <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="s">&quot;You didn&#39;t select a choice.&quot;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">selected_choice</span><span class="o">.</span><span class="n">votes</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">selected_choice</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># Always return an HttpResponseRedirect after successfully dealing</span>
+        <span class="c"># with POST data. This prevents data from being posted twice if a</span>
+        <span class="c"># user hits the Back button.</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;polls.views.results&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">,)))</span>
+</pre></div>
+</div>
+<p>This code includes a few things we haven&#8217;t covered yet in this tutorial:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">request.POST</span></tt> is a dictionary-like object that lets you access submitted data by key name. In this case, <tt class="docutils literal"><span class="pre">request.POST['choice']</span></tt> returns the <tt class="docutils literal"><span class="pre">ID</span></tt> of the selected choice, as a string. <tt class="docutils literal"><span class="pre">request.POST</span></tt> values are always strings.  <strong>POP QUIZ</strong>:  Why is this?
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-request-post-values-strings"><em>answer</em></a>]</li>
+<li>Note that Django also provides <tt class="docutils literal"><span class="pre">request.GET</span></tt> for accessing GET data in the same way &#8211; but we&#8217;re explicitly using <tt class="docutils literal"><span class="pre">request.POST</span></tt> in our code, to ensure that data is only altered via a <tt class="docutils literal"><span class="pre">POST</span></tt> call.</li>
+<li><tt class="docutils literal"><span class="pre">request.POST['choice']</span></tt> will raise <tt class="docutils literal"><span class="pre">KeyError</span></tt> if choice wasn&#8217;t provided in <tt class="docutils literal"><span class="pre">POST</span></tt> data. The above code checks for <tt class="docutils literal"><span class="pre">KeyError</span></tt> and redisplays the poll form with an error message if choice isn&#8217;t given.</li>
+<li>After incrementing the choice counter, the code returns an <tt class="docutils literal"><span class="pre">HttpResponseRedirect</span></tt> rather than a normal <tt class="docutils literal"><span class="pre">HttpResponse</span></tt>. <tt class="docutils literal"><span class="pre">HttpResponseRedirect</span></tt> takes a single argument: the URL to which the user will be redirected (see the following point for how we construct the URL in this case).</li>
+</ul>
+<p>As the Python comment above points out, you should always return an <tt class="docutils literal"><span class="pre">HttpResponseRedirect</span></tt>
+after successfully dealing with POST data. This tip isn&#8217;t specific to Django; it&#8217;s just good Web
+development practice. That way, if the web surfer hits <tt class="docutils literal"><span class="pre">reload</span></tt>, they get the success page again,
+rather than re-doing the action.</p>
+<p>We are using the <tt class="docutils literal"><span class="pre">reverse()</span></tt> function in the <tt class="docutils literal"><span class="pre">HttpResponseRedirect</span></tt> constructor in this example.
+This function helps avoid having to hardcode a URL in the view function. It is given the name
+of the view that we want to pass control to and the variable portion of the URL pattern that points
+to that view. In this case, using the URLconf we set up in <tt class="docutils literal"><span class="pre">urls.py</span></tt>, this <tt class="docutils literal"><span class="pre">reverse()</span></tt> call will return a string like</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="s1">&#39;/polls/3/results/&#39;</span>
+</pre></div>
+</div>
+<p>where the <tt class="docutils literal"><span class="pre">3</span></tt> is the value of <tt class="docutils literal"><span class="pre">p.id</span></tt>. This redirected URL will then call the <tt class="docutils literal"><span class="pre">results</span></tt> view to display
+the final page. Note that you need to use the full name of the view here (including the prefix).</p>
+</li>
+<li><p class="first">RUN YOUR TESTS.  What is still failing?  Not much!  I hope!</p>
+</li>
+<li><p class="first">Write the <tt class="docutils literal"><span class="pre">result</span></tt> view, which will redirect to the results page for the poll.
+Augment <tt class="docutils literal"><span class="pre">views.py</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">poll_id</span><span class="p">):</span>
+     <span class="n">p</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Poll</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">poll_id</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;polls/results.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;poll&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>This is almost exactly the same as the <tt class="docutils literal"><span class="pre">detail()</span></tt> view we wrote earlier.
+The only difference is the template name. We&#8217;ll can fix this redundancy later.</p>
+</li>
+<li><p class="first">Create a <tt class="docutils literal"><span class="pre">/polls/templates/polls/results.html</span></tt> template:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>{{ poll.question }}<span class="nt">&lt;/h1&gt;</span>
+
+<span class="nt">&lt;ul&gt;</span>
+{% for choice in poll.choice_set.all %}
+    <span class="nt">&lt;li&gt;</span>{{ choice.choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}<span class="nt">&lt;/li&gt;</span>
+{% endfor %}
+<span class="nt">&lt;/ul&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/polls/{{ poll.id }}/&quot;</span><span class="nt">&gt;</span>Vote again?<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart your dev server.</p>
+</li>
+<li><p class="first">Navigate to <a class="reference external" href="http://127.0.0.1:8000/polls/1/">http://127.0.0.1:8000/polls/1/</a> in your browser and vote in the poll. You should see a results page that gets updated each time you vote.</p>
+</li>
+<li><p class="first">Verify that if you submit the form without having chosen a choice,
+you should see a warning message.  Why does this happen?
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-django-magical"><em>answer</em></a>]  Nah, just funnin&#8217;!
+[<a class="reference internal" href="../webapp_answers.html#webapp-answers-missing-choice"><em>answer</em></a>]</p>
+</li>
+<li><p class="first">RE-RUN TESTS!  They should <em>all pass</em> at this point.</p>
+</li>
+<li><p class="first">Save and commit:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># in myprojects</span>
+git status
+git add  &lt;some files&gt; <span class="c"># whatever files need adding!</span>
+git commit -m <span class="s2">&quot;protoype complete.  all tests pass.&quot;</span>
+git push origin master
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-16-editing-your-polls-in-the-django-admin-interface">
+<h2>Part 16: Editing your polls in the Django admin interface<a class="headerlink" href="#part-16-editing-your-polls-in-the-django-admin-interface" title="Permalink to this headline">¶</a></h2>
+<p>So far, you&#8217;ve been adding data to your database using the <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">shell</span></tt>.
+This is a flexible way to add data, but it has some drawbacks:</p>
+<ul class="simple">
+<li>It&#8217;s not on the web.</li>
+<li>A fanatical insistence on precision: You have to write Python code to add data, which means that typos or syntax errors could make your life harder.</li>
+<li>An unnecessary lack of color.</li>
+</ul>
+<div class="section" id="background-django-s-built-in-admin-interface">
+<h3>Background: Django&#8217;s built-in admin interface<a class="headerlink" href="#background-django-s-built-in-admin-interface" title="Permalink to this headline">¶</a></h3>
+<p>Generating admin sites for your staff or clients to add, change and delete content is
+tedious work that doesn’t require much creativity. For that reason, Django entirely
+automates creation of admin interfaces for models.</p>
+<p>Django was written in a newsroom environment, with a very clear separation between
+“content publishers” and the “public” site. Site managers use the system to add news
+stories, events, sports scores, etc., and that content is displayed on the public site.
+Django solves the problem of creating a unified interface for site administrators to edit content.</p>
+<p>The admin isn’t necessarily intended to be used by site visitors; it’s for site managers.</p>
+</div>
+<div class="section" id="activate-the-admin-site">
+<h3>Activate the admin site<a class="headerlink" href="#activate-the-admin-site" title="Permalink to this headline">¶</a></h3>
+<p>The Django admin site is not activated by default – it’s an opt-in thing.</p>
+<ol class="arabic">
+<li><p class="first">Activate the admin site for your installation:</p>
+<ol class="arabic">
+<li><p class="first">Open up <tt class="docutils literal"><span class="pre">myproject/settings.py</span></tt> and uncomment &#8220;django.contrib.admin&#8221; and &#8220;django.contrib.admindocs&#8221; in your <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> setting.</p>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">myproject/urls.py</span></tt> file and uncomment the lines that reference the admin – there are four lines in total to uncomment.</p>
+<div class="highlight-bash"><div class="highlight"><pre>from django.contrib import admin
+admin.autodiscover<span class="o">()</span>
+
+<span class="c"># and</span>
+<span class="o">(</span>r<span class="s1">&#39;^admin/doc/&#39;</span>, include<span class="o">(</span><span class="s1">&#39;django.contrib.admindocs.urls&#39;</span><span class="o">))</span>,
+<span class="o">(</span>r<span class="s1">&#39;^admin/&#39;</span>, include<span class="o">(</span>admin.site.urls<span class="o">))</span>,
+</pre></div>
+</div>
+</li>
+<li><p class="first">Since you have added a new application to INSTALLED_APPS, the database tables need to be updated:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python manage.py syncdb
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="restart-the-development-server">
+<h3>Restart the development server<a class="headerlink" href="#restart-the-development-server" title="Permalink to this headline">¶</a></h3>
+<p>Let’s make sure the development server is running and explore the admin site.</p>
+<p>Try going to <a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>. If it does not load, make sure you are
+still running the development server. You can start the development server like so:</p>
+<div class="highlight-python"><pre>python manage.py runserver</pre>
+</div>
+<p><a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a> should show you the admin site&#8217;s login screen.</p>
+</div>
+<div class="section" id="enter-the-admin-site">
+<h3>Enter the admin site<a class="headerlink" href="#enter-the-admin-site" title="Permalink to this headline">¶</a></h3>
+<p>Now, try logging in. (You created a superuser account earlier, when running <tt class="docutils literal"><span class="pre">syncdb</span></tt> for
+the fist time. If you didn&#8217;t create one or forgot the password you can create another one.)
+We suggested <tt class="docutils literal"><span class="pre">super</span></tt> <tt class="docutils literal"><span class="pre">super</span></tt> as the name and password earlier :)</p>
+<p>You should see a few other types of editable content, including groups, users and sites.
+These are core features Django ships with by default.</p>
+</div>
+<div class="section" id="make-the-poll-app-modifiable-in-the-admin">
+<h3>Make the poll app modifiable in the admin<a class="headerlink" href="#make-the-poll-app-modifiable-in-the-admin" title="Permalink to this headline">¶</a></h3>
+<p>But where&#8217;s our poll app? It&#8217;s not displayed on the admin index page.</p>
+<p>Just one thing to do: We need to tell the admin that Poll objects have an admin
+interface.</p>
+<ol class="arabic">
+<li><p class="first">Create <tt class="docutils literal"><span class="pre">polls/admin.py</span></tt>, and edit it to look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Poll</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Poll</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart the dev server.</p>
+<p>Normally,  the server auto-reloads code every time you modify a file, but the action of
+creating a new file doesn&#8217;t trigger the auto-reloading logic. You can stop it by
+typing <tt class="docutils literal"><span class="pre">Ctrl-C</span></tt> (<tt class="docutils literal"><span class="pre">Ctrl-Break</span></tt> on Windows); then use the <tt class="docutils literal"><span class="pre">up</span></tt> arrow on your
+keyboard to find the command again, and hit enter.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="customize-the-admin-change-list">
+<h3>Customize the admin change list<a class="headerlink" href="#customize-the-admin-change-list" title="Permalink to this headline">¶</a></h3>
+<p>Now that the Poll admin page is looking good, let&#8217;s make some
+tweaks to the admin &#8220;change list&#8221; page &#8211; the one that displays
+all the polls in the system.</p>
+<p>By default, Django displays the <tt class="docutils literal"><span class="pre">str()</span></tt> of each object.
+But sometimes it&#8217;d be more helpful if we could display
+individual fields. To do that, use the <tt class="docutils literal"><span class="pre">list_display</span></tt> admin
+option, which is a tuple of field names to display, as
+columns, on the change list page for the object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;question&#39;</span><span class="p">,</span> <span class="s">&#39;pub_date&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Just for good measure, let&#8217;s also include the <tt class="docutils literal"><span class="pre">was_published_today</span></tt>
+custom method from way back in the <strong>models</strong> part of this workshop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="c"># ...</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;question&#39;</span><span class="p">,</span> <span class="s">&#39;pub_date&#39;</span><span class="p">,</span> <span class="s">&#39;was_published_today&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Examine the polls list.</p>
+<p>You can click on the column headers to sort by those values &#8211;
+except in the case of the <tt class="docutils literal"><span class="pre">was_published_today</span></tt> header, because
+sorting by the output of an arbitrary method is not supported.
+Also note that the column header for <tt class="docutils literal"><span class="pre">was_published_today</span></tt> is,
+by default, the name of the method (with underscores replaced with spaces).</p>
+<p>This is shaping up well.</p>
+</li>
+<li><p class="first">Add some search capability. Add this to <tt class="docutils literal"><span class="pre">class</span> <span class="pre">PollAdmin</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="c"># ...</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;question&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>That adds a search box at the top of the change list. When somebody
+enters search terms, Django will search the question field. You can use
+as many fields as you&#8217;d like &#8211; although because it uses a LIKE query
+behind the scenes, keep it reasonable, to keep your database happy.</p>
+</li>
+<li><p class="first">Add drill-down by date.  Because Poll objects have dates,
+it&#8217;d be convenient to be able to drill down by date. Add this line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PollAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="c"># ...</span>
+    <span class="n">date_hierarchy</span> <span class="o">=</span> <span class="s">&#39;pub_date&#39;</span>
+</pre></div>
+</div>
+<p>That adds hierarchical navigation, by date, to the top
+of the change list page. At top level, it displays all available
+years. Then it drills down to months and, ultimately, days.</p>
+</li>
+<li><p class="first"><strong>Discuss as a group</strong>   Polls app vs. admin</p>
+<ul class="simple">
+<li>which is better?</li>
+<li>what features do each have that the other lack?</li>
+<li>which was easier to code?</li>
+<li>which has cleaner code?</li>
+<li>[<a class="reference internal" href="../webapp_answers.html#webapp-answers-polls-vs-admin"><em>answer</em></a>]</li>
+</ul>
+</li>
+<li><p class="first">That&#8217;s the basics of the Django admin interface.  Employ it liberally!</p>
+</li>
+<li><p class="first">Relax, and bask in self-satisfaction.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="part-17-save-commit-push">
+<h2>Part 17: Save, Commit, Push.<a class="headerlink" href="#part-17-save-commit-push" title="Permalink to this headline">¶</a></h2>
+<p>You know what to do now, right? :)</p>
+</div>
+<div class="section" id="part-18-takeways-and-next-steps">
+<h2>Part 18: Takeways and Next Steps<a class="headerlink" href="#part-18-takeways-and-next-steps" title="Permalink to this headline">¶</a></h2>
+<p>By now, you have seen:</p>
+<ul class="simple">
+<li>test-driven development</li>
+<li>acceptence testing</li>
+<li>user stories</li>
+<li>specs and requirements</li>
+<li>iterative development</li>
+<li>git (and version control generally)</li>
+<li>http on a local server</li>
+<li>http logging, status codes</li>
+<li>ports</li>
+<li>django url parsing</li>
+<li>regular expressions</li>
+<li>templates / views</li>
+<li>GET and POST; http forms</li>
+<li>Django admin sites.</li>
+<li>interacted with a sqlite db directly</li>
+<li>django models / orms (object-relational mappers)</li>
+<li>remote deployment</li>
+</ul>
+<p>You have seen a workflow that is similar to those of top developers worldwide.
+Use this as a stepping stone to learn more.</p>
+<div class="section" id="what-next">
+<h3>What next?<a class="headerlink" href="#what-next" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Become a PyStar TA.  You did it, now give back by teaching!</p>
+</li>
+<li><p class="first">Give feedback so we can make the course and text better</p>
+</li>
+<li><p class="first">Expand!  Choose a topic area, and dive in:  obvious choices might be:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Python (we did barely any!)</li>
+<li>Django</li>
+<li>SQL / DB work</li>
+<li>Other Python web frameworks (Pyramid/Pylons, Twisted.web)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Fill a hole:  we didn&#8217;t even get to much HTML, CSS, JavaScript, JQuery, or
+the like!</p>
+</li>
+<li><p class="first">Review.  Read the online Django tutorial or Djangobook</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_organizers.html">Advice for Organizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../safer_space.html">Safer Space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_learners.html">Advice for Learners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../for_guides.html">Advice for Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Badges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup_machine.html">Setup Your Machine!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_pre_google.html">Pre-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../survey_post_google.html">Post-Workshop Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../previous_pystars.html">Previous Pystars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sponsors.html">Sponsors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes_and_tools.html">Notes and Tools</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Twitter</h3>
+            <div id='twitter-area'>[twitter]</div>
+
+          
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="badge_matplotlib.html" title="Graphing with Matplotlib"
+             >previous</a> |
+          <a href="badge_djangozoom.html" title="DjangoZoom Deployment"
+             >next</a>
+            <br/>
+            <a href="../_sources/badges/badge_djangoapp.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Last updated on Sep 09, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
