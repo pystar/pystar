@@ -48,10 +48,15 @@ future workshops.  There may be a disproportionate amount of
 male teachers at initial workshops which is why we are encouraging participants
 to come back and take the lead as soon as they feel ready.
 
-TODO
-----
-
-- arrange for distributed updates to pystar website
+Issue Tracking
+-----------------
 - more badges at different levels of programming (tiered badges)
 - clean up & improve Windows set up instructions
 - modularize (or turn into badges) the Django web app
+
+
+Website Maintenance
+------------------------
+The site is set up as a github page and the domain redirects to it: http://pystar.github.com/pystar/index.html
+
+To update the site, make sure you are on the 'gh-pages' branch, in the docs directory, make your changes to the .rst files, then do 'make html' and the files will be updates in the top level dir for the site.
