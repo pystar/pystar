@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>jQuery Twitter Mentions</title>
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="jquery.twitter.mentions.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $('#content').twitterMentions('infectedfx');
+	});
+</script>
+<style type="text/css" media="screen">
+body {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	background-color:#FFF;
+}
+a {
+	color:#09F;
+	text-decoration:none;
+}
+a:hover {
+	color: #F60;
+}
+#content {
+	width:350px;
+	margin:0 auto 50px auto;
+	border:4px solid #DDD;
+}
+ul.twitter-mentions {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+ul.twitter-mentions li {
+	overflow:hidden;
+	padding:5px 10px;
+	border-bottom:1px dotted #CCC;
+	background-color:#fff;
+}
+ul.twitter-mentions li.odd {
+	background-color:#EDEDED;
+}
+ul.twitter-mentions img {
+	float:left;
+	border:1px dotted #CCC;
+	padding:2px;
+	margin:0 10px 0 0;
+}
+</style>
+</head>
+<body>
+<div id="content"></div>
+</body>
+</html>

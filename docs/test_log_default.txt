@@ -1,0 +1,47 @@
+.. test_log_default
+
+::
+
+    (pystar):myproject$ python manage.py test
+    Creating test database 'default'...
+    Creating table auth_permission
+    Creating table auth_group_permissions
+    Creating table auth_group
+    Creating table auth_user_user_permissions
+    Creating table auth_user_groups
+    Creating table auth_user
+    Creating table auth_message
+    Creating table django_content_type
+    Creating table django_session
+    Creating table django_site
+    Installing index for auth.Permission model
+    Installing index for auth.Group_permissions model
+    Installing index for auth.User_user_permissions model
+    Installing index for auth.User_groups model
+    Installing index for auth.Message model
+    No fixtures found.
+    ..........EE...E.............................................................................................................................................................
+    ======================================================================
+    ERROR: test_password_change_fails_with_invalid_old_password (django.contrib.auth.tests.views.ChangePasswordTest)
+    ----------------------------------------------------------------------
+
+      ...
+    TemplateDoesNotExist: registration/password_change_form.html
+
+    ======================================================================
+    ERROR: test_password_change_fails_with_mismatched_passwords (django.contrib.auth.tests.views.ChangePasswordTest)
+    ----------------------------------------------------------------------
+      ... 
+    TemplateDoesNotExist: registration/password_change_form.html
+
+    ======================================================================
+    ERROR: Logout without next_page option renders the default template
+    ----------------------------------------------------------------------
+      ... 
+    AttributeError: 'module' object has no attribute 'handler500'
+
+    ----------------------------------------------------------------------
+    Ran 173 tests in 3.557s
+
+    FAILED (errors=3)
+    Destroying test database 'default'...

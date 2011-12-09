@@ -1,0 +1,84 @@
+{% extends "!layout.html" %}
+{% set script_files = script_files + [
+    "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js",
+    "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js",
+    "http://tablesorter.googlecode.com/svn/trunk/jquery.tablesorter.min.js",
+    "_static/js/third_party/jquery.twitter.mentions/jquery.twitter.mentions.js",
+    "_static/js/pystar.js",
+    "_static/js/third_party/jquery.socialbutton-1.7.1.js",
+
+] %}
+
+{% block extrahead %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{pathto("_static/pystar.css",1)}}" type="text/css" /> 
+    <link rel="stylesheet" href="{{pathto("_static/css/twitter-mentions.css",1)}}" type="text/css" />
+    <link rel="stylesheet" href="{{pathto("_static/tablesorter_blue_skin/style.css",1)}}" type="text/css" /> 
+
+{% endblock %}
+
+{% block header %}
+    {{ super() }}
+    <div style="position: absolute; top:0px; right:0px">
+    <a href="https://github.com/pystar/pystar"><img src="{{pathto("_static/img/forkme_right_darkblue_121621.png",1)}}" /></a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+          {%- block document %}
+            {{ super() }}
+          {%- endblock %}
+        </div>
+        <div class="sidebar">
+          {%- block sidebartoc %}
+          <h3>{{ _('Table Of Contents') }}</h3>
+          {{ toctree() }}
+          {%- endblock %}
+
+          {%- block socialmedia %}
+          <h3 style="margin-top: 1.5em;">{{ _('Twitter') }}</h3>
+            <div id='twitter-area'>[twitter]</div>
+
+          {#  thi doesn't quite work yet, but is close!  GRL
+          <h3 style="margin-top: 1.5em;">{{ _('Link to us!') }}</h3>
+
+            <div class='socialbutton'>
+                <!-- <div id="evernote2"></div>
+                <div id="hatena2"></div>
+                <div id="gree2"></div>
+                <div id="mixi2"></div> -->
+                <div id="facebook_share2"></div>
+                <div id="twitter2"></div>
+                <div id="facebook_like2"></div>
+            </div>
+          #}
+          {%- endblock %}
+
+        
+
+          {%- block sidebarsearch %}
+          <h3 style="margin-top: 1.5em;">{{ _('Search') }}</h3>
+          <form class="search" action="{{ pathto('search') }}" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="{{ _('Go') }}" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            {{ _('Enter search terms or a module, class or function name.') }}
+          </p>
+          {%- endblock %}
+
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+{% endblock %}
+
+
+
