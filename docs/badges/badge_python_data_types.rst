@@ -274,7 +274,7 @@ Accessing elements
     True
     >>> her_dict.get("Eve")
     >>> her_dict.get("Alice")
-    'coconut'
+    'chocolate'
 
 Changing elements
 
@@ -286,6 +286,9 @@ Changing elements
 
     >>> type(my_dict)
     <type 'dict'>
+    
+    >>> her_dict.get("Alice")
+    'coconut'
 
 Tuples
 ------
