@@ -8,12 +8,12 @@ List of Badges!
 
 Basics
 ------
- ..  toctree::
-     :maxdepth: 1
- 
-     badge_reading_the_text
-     badge_self_help
-     badge_cmd_nav
+..  toctree::
+    :maxdepth: 1
+
+    badge_reading_the_text
+    badge_self_help
+    badge_cmd_nav
 
 Learning Python
 ---------------
