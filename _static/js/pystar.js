@@ -5,7 +5,7 @@ $(document).ready(function(){
     // twitter mentions
     $('#twitter-area').twitterMentions(['#pystar', '#pystarmpls', 'pystar.org', 'pystarphilly', '@PyStarPhilly'],{ 
                 avatar : true,
-                maximum : 10,
+                maximum : 6,
                 ulClass : 'twitter-mentions',
                 odd : true,
                 oddClass : 'odd'
