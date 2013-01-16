@@ -21,8 +21,8 @@ https://github.com/pystar/pystar and do a pull request or ask to become a collab
 PyStar Philly
 --------------
 
-February 2012
-Join us for a special project night on February 19 from 6-9pm. We'll be partnering with Code for America Brigade to learn about building civic apps with open data. This is a beginner-friendly event. Register here: http://www.meetup.com/phillypug/events/98708962/
+February 2013
+Join us for a special project night on February 19 from 6-9pm at Devnuts. We'll be partnering with Code for America Brigade to learn about building civic apps with open data. This is a beginner-friendly event. Register here: http://www.meetup.com/phillypug/events/98708962/
 
 July 2012
 Join us at Indy Hall every Monday this month for Julython in Philly! We've organized a series of events to help new Pythonistas practice Python, learn open source tools, and rack up points in the Julython competition. More information here
