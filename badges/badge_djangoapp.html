@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
     <title>Django Polls Webapp &mdash; PyStar: Programming Workshops for Women and Their Friends</title>
+    
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -61,7 +64,8 @@
           <p class="logo"><a href="../index.html">
             <img class="logo" src="../_static/pystar_flaming_160_150px.png" alt="Logo"/>
           </a></p>
-        <h1><a href="../index.html">PyStar: Programming Workshops for Women and Their Friends</a></h1>
+        <div class="headertitle"><a
+          href="../index.html">PyStar: Programming Workshops for Women and Their Friends</a></div>
         <div class="rel">
           <a href="badge_matplotlib.html" title="Graphing with Matplotlib"
              accesskey="P">previous</a> |
@@ -711,7 +715,7 @@ frameworks might make these choices or use these terms differently.  Who is righ
 </div>
 <div class="section" id="part-10-mockups-views-and-urls">
 <h2>Part 10: Mockups, Views, and URLs<a class="headerlink" href="#part-10-mockups-views-and-urls" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-django-philosophy admonition ">
+<div class="admonition-django-philosophy admonition">
 <p class="first admonition-title">Django-Philosophy</p>
 <p class="last">A view is a “type” of Web page in your Django application that
 generally serves a specific
@@ -1018,7 +1022,7 @@ doing it from right in your framework can be a lot easier!</li>
 <p>Remember those files from <strong>Create The Poll App</strong> above?
 We have worked with <tt class="docutils literal"><span class="pre">views.py</span></tt> and <tt class="docutils literal"><span class="pre">test.py</span></tt>.  Let&#8217;s tackle <tt class="docutils literal"><span class="pre">models.py</span></tt>
 next and make some actual data for our views to see!</p>
-<div class="admonition-django-philosophy admonition ">
+<div class="admonition-django-philosophy admonition">
 <p class="first admonition-title">Django-Philosophy</p>
 <p>A model is the single, definitive source of data about your data.
 It contains the essential fields and behaviors of the data you&#8217;re storing.
@@ -1202,11 +1206,12 @@ up the project&#8217;s environment for you. &#8220;Setting up the environment&#8
 </div>
 </li>
 <li><p class="first">Send the Poll back in time:</p>
-<div class="highlight-python"><pre># Change values by changing the attributes, then calling save().
-&gt;&gt;&gt; p.pub_date = datetime.datetime(2007, 4, 1, 0, 0)
-&gt;&gt;&gt; p.save()
-&gt;&gt;&gt; p.pub_date
-datetime.datetime(2007, 4, 1, 0, 0)</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Change values by changing the attributes, then calling save().</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">pub_date</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
 </div>
 </li>
 <li><p class="first">Ask Django to show a list of all the Poll objects available:</p>
@@ -1284,7 +1289,7 @@ come with a module, you can test it in the interactive shell:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Poll</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
     <span class="o">...</span>
-<span class="nc">DoesNotExist</span>: <span class="n-Identifier">Poll matching query does not exist.</span>
+<span class="gr">DoesNotExist</span>: <span class="n">Poll matching query does not exist.</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -1526,12 +1531,13 @@ Right alongside the <tt class="docutils literal"><span class="pre">views.py</spa
 </li>
 <li><p class="first">Edit <tt class="docutils literal"><span class="pre">TEMPLATE_DIRS</span></tt> in <tt class="docutils literal"><span class="pre">settings.py</span></tt> to have the full path to the templates folder inside your new app. On my computer, this looks like:</p>
 <blockquote>
-<div><div class="highlight-python"><pre> TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    '/karen/Code/pystarl/django-projects/myproject/polls/templates',
-)</pre>
+<div><div class="highlight-python"><div class="highlight"><pre> <span class="n">TEMPLATE_DIRS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c"># Put strings here, like &quot;/home/html/django_templates&quot; or &quot;C:/www/django/templates&quot;.</span>
+    <span class="c"># Always use forward slashes, even on Windows.</span>
+    <span class="c"># Don&#39;t forget to use absolute paths, not relative paths.</span>
+    <span class="s">&#39;/karen/Code/pystarl/django-projects/myproject/polls/templates&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div></blockquote>
 </li>
@@ -1877,7 +1883,8 @@ admin.autodiscover<span class="o">()</span>
 <p>Let’s make sure the development server is running and explore the admin site.</p>
 <p>Try going to <a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>. If it does not load, make sure you are
 still running the development server. You can start the development server like so:</p>
-<div class="highlight-python"><pre>python manage.py runserver</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">runserver</span>
+</pre></div>
 </div>
 <p><a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a> should show you the admin site&#8217;s login screen.</p>
 </div>
@@ -2094,8 +2101,8 @@ the like!</p>
         <div class="right">
           
     <div class="footer">
-      Last updated on Dec 08, 2011.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Last updated on Jan 16, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>
         <div class="clearer"></div>

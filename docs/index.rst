@@ -21,16 +21,32 @@ https://github.com/pystar/pystar and do a pull request or ask to become a collab
 PyStar Philly
 --------------
 
-February 2013
-Join us for a special project night on February 19 from 6-9pm at Devnuts. We'll be partnering with Code for America Brigade to learn about building civic apps with open data. This is a beginner-friendly event. Register here: http://www.meetup.com/phillypug/events/98708962/
+**February 19, 2013**
 
-July 2012
-Join us at Indy Hall every Monday this month for Julython in Philly! We've organized a series of events to help new Pythonistas practice Python, learn open source tools, and rack up points in the Julython competition. More information here
+You're invited to a special project night on February 19 from 6-9pm at Devnuts. We'll be partnering with Code for America Brigade to learn about building civic apps with open data. This event is for women and their friends. Beginners are very welcome. Register here: http://www.meetup.com/phillypug/events/98708962/
 
-June 2012
-Introduction to Python workshop for women and their friends. Join us June 22-23 at Drexel University. More information here
 
-Follow @PyStarPhilly and @PhillyPUG on Twitter for updates.
+**January 31, 2013**
+
+Join us for our January project night from 6-9pm at Azavea. Beginners are welcome. Register here: http://www.meetup.com/phillypug/events/98705182/ 
+
+
+**November 27, 2012**
+
+Join us for our November project night from 6-9pm at Azavea. Work on Python projects, get programming help, work through tutorials, help others, hang out with other Pythonistas, and have fun. Instructors from our Python workshop will be available to answer questions. Register here: http://www.meetup.com/phillypug/events/92155352/
+
+
+**July 2012**
+
+Julython in Philly! We've organized a series of events to help new Pythonistas practice Python, learn open source tools, and rack up points in the Julython competition. More information here: http://www.meetup.com/phillypug/events/71767492/
+
+
+**June 22-23, 2012**
+
+Introduction to Python workshop for women and their friends. Join us for this 1.5 day workshop on June 22-23 at Drexel University. More information here: http://www.meetup.com/phillypug/events/63291352/
+
+
+Follow `@PyStarPhilly <https://twitter.com/PyStarPhilly>`_ and `@PhillyPUG <https://twitter.com/PhillyPUG>`_ on Twitter for updates.
 
 
 PyStar Minneapolis

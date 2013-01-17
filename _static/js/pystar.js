@@ -3,9 +3,9 @@
 
 $(document).ready(function(){
     // twitter mentions
-    $('#twitter-area').twitterMentions(['#pystar', '#pystarmpls', 'pystar.org', 'pystarphilly', '@PyStarPhilly'],{ 
+    $('#twitter-area').twitterMentions(['#pystar', '#pystarmpls', 'pystar.org'],{ 
                 avatar : true,
-                maximum : 6,
+                maximum : 10,
                 ulClass : 'twitter-mentions',
                 odd : true,
                 oddClass : 'odd'
